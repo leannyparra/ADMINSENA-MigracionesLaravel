@@ -9,9 +9,7 @@ class Area extends Model
 {
     use HasFactory;
     
-    protected $fillable = [
-    'name',
-    ];
+    protected $fillable = ['name',];
 
     // Relación Uno a Muchos (Una área tiene muchos cursos)
     public function courses(){
