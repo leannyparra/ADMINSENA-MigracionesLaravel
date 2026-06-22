@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email');
+            $table->string('email')->unique();
 
-            $table->unsignedBigInteger('area_id')->nullable()->unique();
+            $table->unsignedBigInteger('area_id')->nullable();
 
             $table->foreign('area_id')
                 ->references('id')
                 ->on('areas')
                 ->onDelete('set null')
-                ->onUpdate('set null');
+                ->onUpdate('cascade');
 
             $table->unsignedBigInteger('training_center_id')->nullable()->unique();
 
@@ -30,7 +30,7 @@ return new class extends Migration
                 ->references('id')
                 ->on('training_centers')
                 ->onDelete('set null')
-                ->onUpdate('set null');
+                ->onUpdate('cascade');
             $table->timestamps();
         });
     }

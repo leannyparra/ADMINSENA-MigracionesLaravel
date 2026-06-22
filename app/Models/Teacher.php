@@ -25,6 +25,6 @@ class Teacher extends Model
         return $this->belongsTo('App\Models\TrainingCenter');
     }
     public function courses(){
-        return $this->belongsToMany('App\Models\Course', 'course_teacher');
+        return $this->belongsToMany('App\Models\Course', 'course_teachers');
     }
 }
