@@ -7,8 +7,19 @@ use App\Models\Apprentice;
 use App\Models\Course;
 use App\Models\Computer;
 
+use Illuminate\View\View;
 class ApprenticeController extends Controller
 {
+    public function index(){
+
+        $apprentices=Apprentice::all();
+        {
+
+            return view('apprentice.index',compact('apprentices'));
+
+        }
+    }
+
     public function create(){
         $courses = Course::all();
         $computers = Computer::all();

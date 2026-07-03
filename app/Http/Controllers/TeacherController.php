@@ -10,6 +10,15 @@ use App\Models\TrainingCenter;
 
 class TeacherController extends Controller
 {
+        public function index(){
+
+        $teachers=Teacher::all();
+        {
+
+            return view('teacher.index',compact('teachers'));
+
+        }
+    }
     public function create(){
 
         $areas = Area::all();
