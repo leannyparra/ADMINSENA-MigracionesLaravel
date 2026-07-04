@@ -31,4 +31,10 @@ class TrainingCenterController extends Controller
 
         return $trainingCenter; 
     }
+    public function show ($id)
+    {
+     $trainingCenter=TrainingCenter::find($id);
+       return view('trainingCenter.show',compact('trainingCenter'));
+
+    }
 }

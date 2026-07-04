@@ -30,4 +30,10 @@ class CourseController extends Controller
         Course::create($request->all());
 
     }
+    public function show ($id)
+    {
+     $course=Course::find($id);
+       return view('course.show',compact('course'));
+
+    }
 }

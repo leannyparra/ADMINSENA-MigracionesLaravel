@@ -1,42 +1,86 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary px-4 shadow-sm">
-    <div class="container-fluid">
-      <a class="navbar-brand fw-bold" href="#">Admin SENA</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Inicio</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Gestión Base
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">🏢 Centros de Formación</a></li>
-              <li><a class="dropdown-item" href="#">📂 Áreas</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Operación Académica
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">👨‍🏫 Instructores</a></li>
-              <li><a class="dropdown-item" href="#">📋 Cursos / Fichas</a></li>
-              <li><a class="dropdown-item" href="#">🧑‍🎓 Aprendices</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">💻 Computadores</a></li>
-            </ul>
-          </li>
-        </ul>
+<!-- Navbar completamente plano de pantalla completa (colores de image_662d60.png) -->
+<nav class="navbar navbar-expand-lg bg-white border-bottom py-3 style-flat-navbar">
+    <div class="container-fluid px-4 px-md-5">
         
-        <form class="d-flex" role="search">
-          <input class="form-control me-2 bg-white text-dark border-0" type="search" placeholder="Buscar en el sistema..." aria-label="Search">
-          <button class="btn btn-light text-primary fw-semibold" type="submit">Buscar</button>
-        </form>
-      </div>
+        <!-- Logotipo Institucional -->
+        <a class="navbar-brand d-flex align-items-center fw-bold m-0 text-dark" href="#" style="font-size: 1.4rem;">
+            <i class="bi bi-shield-check me-2" style="color: #39A900; font-size: 1.6rem;"></i>
+            <span>Admin<span style="color: #39A900;">SENA</span></span>
+        </a>
+
+        <!-- Botón Móvil -->
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#flatNavbarSena" aria-controls="flatNavbarSena" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Menú de Navegación -->
+        <div class="collapse navbar-collapse" id="flatNavbarSena">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-5 gap-3">
+                <li class="nav-item">
+                    <a class="nav-link active fw-bold text-dark position-relative active-green-line px-2" aria-current="page" href="#">Inicio</a>
+                </li>
+                
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle fw-medium text-secondary hover-dark-link px-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Gestión Base
+                    </a>
+                    <ul class="dropdown-menu border shadow-sm mt-2">
+                        <li><a class="dropdown-item" href="#">Centros de Formación</a></li>
+                        <li><a class="dropdown-item" href="#">Áreas del Centro</a></li>
+                        <li><a class="dropdown-item" href="#">Sedes Vinculadas</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle fw-medium text-secondary hover-dark-link px-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Operación Académica
+                    </a>
+                    <ul class="dropdown-menu border shadow-sm mt-2">
+                        <li><a class="dropdown-item" href="#">Instructores</a></li>
+                        <li><a class="dropdown-item" href="#">Cursos / Fichas</a></li>
+                        <li><a class="dropdown-item" href="#">Aprendices</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Buscador idéntico al de image_662d60.png -->
+            <form class="d-flex align-items-center justify-content-end position-relative" role="search" style="max-width: 320px; width: 100%;">
+                <input class="form-control rounded-start-pill bg-light border-0 pe-5 py-2" type="search" placeholder="Buscar..." aria-label="Search" style="font-size: 0.95rem;">
+                <button class="btn rounded-end-pill position-absolute end-0 top-0 h-100 px-4 d-flex align-items-center justify-content-center text-white" type="submit" style="background-color: #39A900;">
+                    <i class="bi bi-search"></i>
+                </button>
+            </form>
+            
+        </div>
     </div>
 </nav>
+
+<!-- Estilos para forzar el diseño plano de lado a lado -->
+<style>
+    .style-flat-navbar {
+        /* Rompe el contenedor global para tocar los bordes de la pantalla */
+        width: 100vw !important;
+        position: relative !important;
+        left: 50% !important;
+        right: 50% !important;
+        margin-left: -50vw !important;
+        margin-right: -50vw !important;
+        box-shadow: none !important; /* Cero sombras flotantes */
+    }
+
+    /* Línea verde inferior para el link activo */
+    .active-green-line::after {
+        content: '';
+        position: absolute;
+        bottom: -6px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: #39A900;
+        border-radius: 2px;
+    }
+
+    .hover-dark-link:hover {
+        color: #212529 !important;
+    }
+</style>

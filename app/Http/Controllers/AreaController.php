@@ -31,4 +31,10 @@ class AreaController extends Controller
       return $area;
 
     }
+        public function show ($id)
+    {
+     $area=Area::find($id);
+       return view('area.show',compact('area'));
+
+    }
 }

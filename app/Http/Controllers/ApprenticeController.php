@@ -7,7 +7,6 @@ use App\Models\Apprentice;
 use App\Models\Course;
 use App\Models\Computer;
 
-use Illuminate\View\View;
 class ApprenticeController extends Controller
 {
     public function index(){
@@ -31,4 +30,11 @@ class ApprenticeController extends Controller
         Apprentice::create($request->all());
 
     }
-}
+
+    public function show ($id)
+    {
+     $apprentice=Apprentice::find($id);
+       return view('apprentice.show',compact('apprentice'));
+
+    }
+    }
