@@ -56,10 +56,6 @@
             <a href="{{ url('training-center/list') }}" class="btn fw-semibold px-4 py-2 border text-secondary bg-white shadow-sm custom-btn-cancel" style="font-size: 0.85rem; letter-spacing: 0.5px;">
                 VOLVER
             </a>
-            <!-- Enlace de edición corregido con tu ruta real con guion medio -->
-            <a href="{{ url('/training-center/' . $trainingCenter->id . '/edit') }}" class="btn text-white fw-semibold px-4 py-2 shadow-sm custom-btn-continue" style="background-color: #39A900; font-size: 0.85rem; letter-spacing: 0.5px;">
-                EDITAR CENTRO <i class="bi bi-arrow-right ms-1"></i>
-            </a>
         </div>
 
     </div>

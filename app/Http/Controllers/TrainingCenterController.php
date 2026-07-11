@@ -33,8 +33,27 @@ class TrainingCenterController extends Controller
     }
     public function show ($id)
     {
-     $trainingCenter=TrainingCenter::find($id);
+        $trainingCenter=TrainingCenter::find($id);
        return view('trainingCenter.show',compact('trainingCenter'));
 
     }
+
+
+
+        public function edit(trainingCenter $trainingCenter)
+    { 
+
+        return view('trainingCenter.edit', compact('trainingCenter'));
+    }
+
+
+
+         public function update(Request $request, trainingCenter $trainingCenter){
+
+         $trainingCenter->update($request->all());
+
+        return redirect()->route('trainingCenter.index');
+
+      }
+    
 }

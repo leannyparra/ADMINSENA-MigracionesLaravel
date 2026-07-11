@@ -37,4 +37,23 @@ class AreaController extends Controller
        return view('area.show',compact('area'));
 
     }
+
+
+
+
+    public function edit(area $area)
+    { 
+
+        return view('area.edit', compact('area'));
+    }
+
+
+
+         public function update(Request $request, area $area){
+
+         $area->update($request->all());
+
+        return redirect()->route('area.index');
+
+      }
 }

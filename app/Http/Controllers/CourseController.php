@@ -36,4 +36,26 @@ class CourseController extends Controller
        return view('course.show',compact('course'));
 
     }
+
+
+
+
+
+
+    public function edit(course $course)
+    { 
+        $areas = Area::all();
+        $training_centers = TrainingCenter::all();
+
+        return view('course.edit', compact('course', 'areas', 'training_centers'));
+    }
+
+
+
+         public function update(Request $request, course $course){
+        $course->update($request->all());
+
+        return redirect()->route('course.index');
+
+      }
 }

@@ -24,6 +24,7 @@
                     <th class="border-0 text-center">Curso</th>
                     <th class="border-0 text-center">Equipo</th>
                     <th class="border-0 text-center pe-4" style="width: 100px;">Acciones</th>
+                    
                 </tr>
             </thead>
             
@@ -70,11 +71,22 @@
                         </span>
                     </td>
                     
-                    <!-- Botón de tres puntos (...) para Ver Detalle -->
-                    <td class="text-center pe-4 border-0 py-3 style-right-radius">
-                        <a href="{{ route('apprentice.show', $apprentice->id) }}" class="btn btn-light rounded-circle border d-inline-flex align-items-center justify-content-center shadow-sm hover-dots-btn" style="width: 38px; height: 38px;" title="Ver Detalle">
-                            <i class="bi bi-three-dots text-secondary fs-5"></i>
-                        </a>
+                    <td class="text-center border-0 py-3 style-right-radius align-middle">
+                        <div class="table-actions">
+                            <!-- Botón Ver Detalle (Ojo) -->
+                            <a href="{{ route('apprentice.show', $apprentice->id) }}" 
+                            class="action-btn btn-view" 
+                            title="Ver Detalle">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                        
+                            <!-- Botón Editar (Lápiz - Color SENA) -->
+                            <a href="{{ route('apprentice.edit', $apprentice->id) }}" 
+                            class="action-btn btn-edit" 
+                            title="Editar Aprendiz">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                        </div>
                     </td>
                     
                 </tr>
@@ -122,6 +134,55 @@
     }
     .hover-dots-btn:hover i {
         color: white !important;
+    }
+    /* Contenedor horizontal en la celda */
+    .table-actions {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px; /* Separación perfecta entre los dos botones */
+        vertical-align: middle;
+    }
+
+    /* Base redonda y limpia para ambos botones */
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px; /* Combina con el estilo redondeado de tu diseño */
+        font-size: 1.1rem;
+        text-decoration: none;
+        transition: all 0.2s ease-in-out;
+    }
+
+    /* 1. Botón de Ver (Estilo sutil / Neutral) */
+    .btn-view {
+        background-color: #f1f5f9;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+    }
+
+    .btn-view:hover {
+        background-color: #e2e8f0;
+        color: #0f172a;
+        transform: translateY(-1px);
+    }
+
+    /* 2. Botón de Editar (Fondo Verde SENA suave o sólido) */
+    .btn-edit {
+        background-color: #e8f5e9; /* Un verde clarito de fondo que combina con tus badges */
+        color: #39A900;            /* El verde corporativo en el icono */
+        border: 1px solid #c8e6c9;
+    }
+
+    .btn-edit:hover {
+        background-color: #39A900; /* Se vuelve sólido al pasar el mouse */
+        color: #ffffff;            /* El icono pasa a blanco */
+        border-color: #39A900;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(57, 169, 0, 0.2);
     }
 </style>
 @endsection

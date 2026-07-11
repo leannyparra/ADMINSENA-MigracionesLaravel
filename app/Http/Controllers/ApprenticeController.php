@@ -27,14 +27,40 @@ class ApprenticeController extends Controller
     }
 
     public function store(Request $request){
+
         Apprentice::create($request->all());
+        return redirect()->route('apprentice.index');
 
     }
 
-    public function show ($id)
+    public function show (Apprentice $apprentice)
     {
-     $apprentice=Apprentice::find($id);
+        //$apprentice=Apprentice::find($id);
        return view('apprentice.show',compact('apprentice'));
 
     }
+    
+
+
+
+
+        public function edit(apprentice $apprentice)
+    { 
+
+        $courses = Course::all();
+        $computers = Computer::all();
+
+
+        return view('apprentice.edit', compact('apprentice', 'courses', 'computers'));
+    }
+
+
+
+        public function update(Request $request, apprentice $apprentice){
+
+        $apprentice->update($request->all());
+
+        return redirect()->route('apprentice.index');
+
+      }
     }

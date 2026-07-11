@@ -62,19 +62,20 @@
                                 <i class="bi bi-geo-alt me-1 text-muted"></i> {{ $center->location }}
                             </td>
                             
-                            <!-- Acciones CORREGIDAS a training-center/{id} -->
-                            <td class="px-4 py-3 text-end">
-                                <div class="d-inline-flex gap-2">
-                                    <!-- 👁️ Botón del ojo arreglado -->
-                                    <a href="{{ url('training-center/' . $center->id) }}" class="btn btn-sm btn-light border text-secondary px-2.5 py-1.5 custom-action-btn" title="Ver Detalles">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                    <!-- Enlace de edición preparado con guion medio -->
-                                    <a href="{{ url('training-center/' . $center->id . '/edit') }}" class="btn btn-sm btn-light border text-secondary px-2.5 py-1.5 custom-action-btn" title="Editar">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                </div>
-                            </td>
+                        <!-- Acciones -->
+                        <td class="px-4 py-3 text-end">
+                            <div class="d-inline-flex gap-2">
+                                <!-- Botón Ver usando la variable correcta $center y URL limpia -->
+                            <a href="{{ route('trainingCenter.show', $center->id) }}" class="btn btn-sm btn-light border text-secondary px-2.5 py-1.5 custom-action-btn" style="border-radius: 6px;">
+                                Ver
+                            </a>
+                                                            
+                            <!-- Cambia el enlace del botón Editar por este: -->
+                            <a href="{{ route('trainingCenter.edit', $center->id) }}" class="btn btn-sm btn-light border text-secondary px-2.5 py-1.5 custom-action-btn" style="border-radius: 6px;">
+                                Editar
+                            </a>
+                            </div>
+                        </td>
                         </tr>
                     @empty
                         <tr>

@@ -122,10 +122,7 @@
             <a href="{{ url()->previous() }}" class="btn fw-semibold px-4 py-2 border text-secondary bg-white shadow-sm custom-btn-cancel" style="font-size: 0.85rem; letter-spacing: 0.5px;">
                 VOLVER
             </a>
-            <!-- Envía a la URL de edición usando la ID de manera segura -->
-            <a href="{{ url('/aprendices/' . $apprentice->id . '/edit') }}" class="btn text-white fw-semibold px-4 py-2 shadow-sm custom-btn-continue" style="background-color: #39A900; font-size: 0.85rem; letter-spacing: 0.5px;">
-                EDITAR APRENDIZ <i class="bi bi-arrow-right ms-1"></i>
-            </a>
+
         </div>
 
     </div>

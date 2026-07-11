@@ -42,6 +42,7 @@
                         <th class="px-4 py-3">Nombre Instructor</th>
                         <th class="px-4 py-3">Correo Electrónico</th>
                         <th class="px-4 py-3">Área</th>
+                        <th class="px-4 py-3">Centro de Formacion</th>
                         <th class="px-4 py-3 text-end" style="width: 150px;">Acciones</th>
                     </tr>
                 </thead>
@@ -66,7 +67,14 @@
                             <!-- Área (area_id - Asumiendo relación 'area' en el modelo) -->
                             <td class="px-4 py-3 text-secondary">
                                 <span class="badge bg-light text-dark border px-2 py-1" style="font-size: 0.85rem; font-weight: 500;">
-                                    {{ $teacher->area?->name ?? 'Sin Asignar' }}
+                                    {{ $teacher->area->name}}
+                                </span>
+                            </td>
+                                                        
+                            <!-- Centro -->
+                            <td class="px-4 py-3 text-secondary">
+                                <span class="badge bg-light text-dark border px-2 py-1.5 fw-normal" style="font-size: 0.85rem; border-radius: 6px;">
+                                    {{ $teacher->training_Center?->name ?? 'Sin Centro' }}
                                 </span>
                             </td>
                             
@@ -74,11 +82,11 @@
                             <td class="px-4 py-3 text-end">
                                 <div class="d-inline-flex gap-2">
                                     <!-- 👁️ Ver detalles (Show) -->
-                                    <a href="{{ url('teacher/' . $teacher->id) }}" class="btn btn-sm btn-light border text-secondary px-2.5 py-1.5 custom-action-btn" title="Ver Detalles">
+                                    <a href="{{ route('teacher.show', $teacher->id) }}" class="btn btn-sm btn-light border text-secondary px-2.5 py-1.5 custom-action-btn" title="Ver Detalles">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                     <!-- Editar (Edit) -->
-                                    <a href="{{ url('teacher/' . $teacher->id . '/edit') }}" class="btn btn-sm btn-light border text-secondary px-2.5 py-1.5 custom-action-btn" title="Editar">
+                                    <a href="{{ route('teacher.edit', $teacher->id)}}" class="btn btn-sm btn-light border text-secondary px-2.5 py-1.5 custom-action-btn" title="Editar">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                 </div>

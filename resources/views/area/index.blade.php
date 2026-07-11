@@ -60,11 +60,11 @@
                             <td class="px-4 py-3 text-end">
                                 <div class="d-inline-flex gap-2">
                                     <!-- 👁️ Botón del ojo corregido a tu ruta area/{id} -->
-                                    <a href="{{ url('area/' . $area->id) }}" class="btn btn-sm btn-light border text-secondary px-2.5 py-1.5 custom-action-btn" title="Ver Detalles">
+                                    <a href="{{ route('area.show', $area->id) }}" class="btn btn-sm btn-light border text-secondary px-2.5 py-1.5 custom-action-btn" title="Ver Detalles">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                     <!-- Icono de edición (Por si creas la ruta de editar en singular más adelante) -->
-                                    <a href="{{ url('area/' . $area->id . '/edit') }}" class="btn btn-sm btn-light border text-secondary px-2.5 py-1.5 custom-action-btn" title="Editar">
+                                    <a href="{{ route('area.edit', $area->id ) }}" class="btn btn-sm btn-light border text-secondary px-2.5 py-1.5 custom-action-btn" title="Editar">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                 </div>
