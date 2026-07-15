@@ -19,8 +19,8 @@
                 
                 <!-- Inicio -->
                 <li class="nav-item">
-                    <a class="nav-link px-2 {{ Request::is('/') ? 'active fw-bold text-dark position-relative active-green-line' : 'fw-medium text-secondary hover-dark-link' }}" 
-                       href="{{ url('/') }}">
+                    <a class="nav-link px-2 {{ Request::is('nosotros*') ? 'active fw-bold text-dark position-relative active-green-line' : 'fw-medium text-secondary hover-dark-link' }}" 
+                       href="{{ route('nosotros') }}">
                        Inicio
                     </a>
                 </li>

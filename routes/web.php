@@ -10,6 +10,10 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\ApprenticeController;
 use App\Http\Controllers\CourseTeacherController;
 
+
+//main
+Route::get('/nosotros', function () {return view('main'); })->name('nosotros'); 
+
 // Rutas para Centros de Formacion 
 Route::get('training-center/list', [TrainingCenterController::class, 'index'])->name('trainingCenter.index');
 Route::get('training-center/create', [TrainingCenterController::class, 'create'])->name('trainingCenter.create');
