@@ -55,5 +55,11 @@ class TrainingCenterController extends Controller
         return redirect()->route('trainingCenter.index');
 
       }
+
+          public function destroy(TrainingCenter $trainingCenter)
+    {
+        $trainingCenter->delete();
+        return redirect()->route('trainingCenter.index');
+    }
     
 }

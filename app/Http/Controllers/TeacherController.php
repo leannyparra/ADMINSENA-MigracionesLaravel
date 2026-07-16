@@ -57,4 +57,11 @@ class TeacherController extends Controller
         return redirect()->route('teacher.index');
 
       }
+
+
+    public function destroy(Teacher $teacher)
+    {
+        $teacher->delete();
+        return redirect()->route('teacher.index');
+    }
 }

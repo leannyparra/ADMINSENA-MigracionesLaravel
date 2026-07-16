@@ -63,4 +63,13 @@ class ApprenticeController extends Controller
         return redirect()->route('apprentice.index');
 
       }
+
+
+
+
+    public function destroy(Apprentice $apprentice)
+    {
+        $apprentice->delete();
+        return redirect()->route('apprentice.index');
+    }
     }

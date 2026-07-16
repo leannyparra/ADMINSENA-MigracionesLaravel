@@ -74,6 +74,16 @@
                             <a href="{{ route('trainingCenter.edit', $center->id) }}" class="btn btn-sm btn-light border text-secondary px-2.5 py-1.5 custom-action-btn" style="border-radius: 6px;">
                                 Editar
                             </a>
+                        <form action="{{ route('trainingCenter.destroy', $center->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="btn-delete-custom" title="Eliminar " onclick="return confirm('¿Estás seguro de que deseas eliminar?')">
+                                <!-- Icono de papelera en SVG puro (Nunca se va a romper) -->
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 20px; height: 20px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                </svg>
+                            </button>
+                        </form>
                             </div>
                         </td>
                         </tr>
@@ -133,6 +143,26 @@
 
     .hover-link-sena:hover {
         color: #39A900 !important;
+    }
+            .btn-delete-custom {
+        background-color: #fef2f2; /* Fondo rojo/crema muy suave */
+        color: #ef4444;            /* Icono rojo */
+        border: 1px solid #fee2e2;  /* Borde sutil */
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;       /* Esquinas suavizadas idénticas al botón verde */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        padding: 0;                /* Quita el padding de Bootstrap que lo volvía óvalo */
+    }
+
+    .btn-delete-custom:hover {
+        background-color: #ef4444; /* Se llena de rojo al pasar el mouse */
+        color: #ffffff;            /* El icono se vuelve blanco */
+        border-color: #ef4444;
     }
 </style>
 @endsection
