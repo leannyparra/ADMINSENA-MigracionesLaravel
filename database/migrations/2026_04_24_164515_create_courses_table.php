@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreign('area_id')
                 ->references('id')
                 ->on('areas')
-                ->onDelete('set null')
+                ->onDelete('cascade')
                 ->onUpdate('cascade');
 
             $table->unsignedBigInteger('training_center_id')->nullable();
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->foreign('training_center_id')
                 ->references('id')
                 ->on('training_centers')
-                ->onDelete('set null')
+                ->onDelete('cascade')
                 ->onUpdate('cascade');
 
 

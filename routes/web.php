@@ -9,10 +9,20 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\ApprenticeController;
 use App\Http\Controllers\CourseTeacherController;
-
+use App\Http\Controllers\AuthController;
 
 //main
-Route::get('/nosotros', function () {return view('main'); })->name('nosotros'); 
+Route::get('/nosotros', function () {return view('main'); })->name('nosotros');
+
+//login
+Route::get('/login', function () { return view('auth.login'); })->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::get('/inicio-usuario', function () {return view('usuario.inicio');})->name('inicio.usuario');
+
+// register
+Route::get('/register', function () {return view('auth.register');})->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+
 
 // Rutas para Centros de Formacion 
 Route::get('training-center/list', [TrainingCenterController::class, 'index'])->name('trainingCenter.index');
@@ -78,3 +88,4 @@ Route::post('apprentice/store',[ApprenticeController::class,'store'])->name('app
 // Rutas para CourseTeacher--PIVOTE
 Route::get('course-teacher/create',[CourseTeacherController::class,'create']);
 Route::post('course-teacher/store',[CourseTeacherController::class,'store'])->name('course-teacher.store');
+

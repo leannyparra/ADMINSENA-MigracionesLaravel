@@ -2,9 +2,9 @@
 <nav class="navbar navbar-expand-lg bg-white border-bottom py-3 style-flat-navbar">
     <div class="container-fluid px-4 px-md-5">
         
-        <!-- Logotipo Institucional -->
+        <!-- Logotipo Institucional SENA -->
         <a class="navbar-brand d-flex align-items-center fw-bold m-0 text-dark" href="{{ url('/') }}" style="font-size: 1.4rem;">
-            <i class="bi bi-shield-check me-2" style="color: #39A900; font-size: 1.6rem;"></i>
+            <img src="{{asset ('img/logoSENA2.png')}}" alt="Logo SENA" style="height: 40px;" class="me-2">
             <span>Admin<span style="color: #39A900;">SENA</span></span>
         </a>
 
