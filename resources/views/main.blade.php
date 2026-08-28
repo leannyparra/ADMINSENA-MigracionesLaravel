@@ -97,212 +97,275 @@
         <!-- CARRUSEL -->
 
         <div class="offers-carousel">
+<div class="offers-track" id="offersTrack">
 
-            <div class="offers-track" id="offersTrack">
+    @forelse($offers as $index => $offer)
 
+        <div class="offer-slide {{ $index === 0 ? 'active' : '' }}">
 
-                <!-- =================================================
-                     OFERTA 1
-                ================================================== -->
+            @if($offer->image)
 
-                <a
-                    href="{{ url('/ofertas') }}"
-                    class="offer-slide active"
+                <img
+                    src="{{ asset('storage/' . $offer->image) }}"
+                    alt="Oferta SENA"
                 >
 
-                    <img
-                        src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop"
-                        alt="Tecnología y programación"
-                    >
+            @else
 
-
-                    <div class="offer-overlay"></div>
-
-
-                    <div class="offer-info">
-
-                        <span class="offer-tag">
-                            Tecnología
-                        </span>
-
-
-                        <h3>
-                            Análisis y Desarrollo
-                            de Software
-                        </h3>
-
-
-                        <p>
-                            Fórmate en programación,
-                            desarrollo web y tecnologías digitales.
-                        </p>
-
-
-                        <span class="offer-action">
-
-                            Ver oferta
-
-                            <i class="fa-solid fa-arrow-right"></i>
-
-                        </span>
-
-                    </div>
-
-                </a>
-
-
-
-                <!-- =================================================
-                     OFERTA 2
-                ================================================== -->
-
-                <a
-                    href="{{ url('/ofertas') }}"
-                    class="offer-slide"
+                <img
+                    src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop"
+                    alt="Oferta de formación SENA"
                 >
 
-                    <img
-                        src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop"
-                        alt="Programación"
-                    >
+            @endif
 
 
-                    <div class="offer-overlay"></div>
+            <div class="offer-overlay"></div>
 
 
-                    <div class="offer-info">
+            <div class="offer-info">
 
-                        <span class="offer-tag">
-                            Desarrollo
-                        </span>
-
-
-                        <h3>
-                            Desarrollo de
-                            Aplicaciones Web
-                        </h3>
+                <span class="offer-tag">
+                    {{ $offer->course->area->name ?? 'Formación SENA' }}
+                </span>
 
 
-                        <p>
-                            Aprende a crear soluciones digitales
-                            modernas y funcionales.
-                        </p>
+                <h3>
+                    Curso / Ficha {{ $offer->course->course_number ?? 'N/A' }}
+                </h3>
 
 
-                        <span class="offer-action">
-
-                            Ver oferta
-
-                            <i class="fa-solid fa-arrow-right"></i>
-
-                        </span>
-
-                    </div>
-
-                </a>
+                <p>
+                    Centro:
+                    {{ $offer->trainingCenter->name ?? 'No disponible' }}
+                </p>
 
 
-
-                <!-- =================================================
-                     OFERTA 3
-                ================================================== -->
-
-                <a
-                    href="{{ url('/ofertas') }}"
-                    class="offer-slide"
+                <button
+                    type="button"
+                    class="offer-action"
+                    data-bs-toggle="modal"
+                    data-bs-target="#offerModal{{ $offer->id }}"
                 >
 
-                    <img
-                        src="https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=1200&auto=format&fit=crop"
-                        alt="Gestión empresarial"
-                    >
+                    Ver detalles
 
+                    <i class="fa-solid fa-arrow-right"></i>
 
-                    <div class="offer-overlay"></div>
-
-
-                    <div class="offer-info">
-
-                        <span class="offer-tag">
-                            Gestión
-                        </span>
-
-
-                        <h3>
-                            Gestión Administrativa
-                        </h3>
-
-
-                        <p>
-                            Desarrolla habilidades para la gestión
-                            y administración de organizaciones.
-                        </p>
-
-
-                        <span class="offer-action">
-
-                            Ver oferta
-
-                            <i class="fa-solid fa-arrow-right"></i>
-
-                        </span>
-
-                    </div>
-
-                </a>
-
-
-
-                <!-- =================================================
-                     OFERTA 4
-                ================================================== -->
-
-                <a
-                    href="{{ url('/ofertas') }}"
-                    class="offer-slide"
-                >
-
-                    <img
-                        src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop"
-                        alt="Formación académica"
-                    >
-
-
-                    <div class="offer-overlay"></div>
-
-
-                    <div class="offer-info">
-
-                        <span class="offer-tag">
-                            Formación
-                        </span>
-
-
-                        <h3>
-                            Programas de Formación
-                            SENA
-                        </h3>
-
-
-                        <p>
-                            Explora las diferentes oportunidades
-                            de formación disponibles.
-                        </p>
-
-
-                        <span class="offer-action">
-
-                            Ver todas
-
-                            <i class="fa-solid fa-arrow-right"></i>
-
-                        </span>
-
-                    </div>
-
-                </a>
+                </button>
 
             </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             MODAL DE ESTA OFERTA
+        ====================================================== -->
+
+        <div
+            class="modal fade"
+            id="offerModal{{ $offer->id }}"
+            tabindex="-1"
+            aria-labelledby="offerModalLabel{{ $offer->id }}"
+            aria-hidden="true"
+        >
+
+            <div class="modal-dialog modal-dialog-centered">
+
+                <div class="modal-content border-0 shadow-lg">
+
+                    <div class="modal-header">
+
+                        <h5
+                            class="modal-title fw-bold"
+                            id="offerModalLabel{{ $offer->id }}"
+                        >
+
+                            Oferta #{{ $offer->offer_number }}
+
+                        </h5>
+
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Cerrar"
+                        ></button>
+
+                    </div>
+
+
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+
+                            <span class="badge bg-success">
+                                {{ $offer->status }}
+                            </span>
+
+                        </div>
+
+
+                        <h4 class="fw-bold mb-3">
+
+                            Ficha
+                            {{ $offer->course->course_number ?? 'N/A' }}
+
+                        </h4>
+
+
+                        <div class="offer-detail-item">
+
+                            <i class="fa-solid fa-building"></i>
+
+                            <strong>Centro:</strong>
+
+                            <span>
+                                {{ $offer->trainingCenter->name ?? 'No disponible' }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="offer-detail-item">
+
+                            <i class="fa-solid fa-layer-group"></i>
+
+                            <strong>Área:</strong>
+
+                            <span>
+                                {{ $offer->course->area->name ?? 'No disponible' }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="offer-detail-item">
+
+                            <i class="fa-solid fa-clock"></i>
+
+                            <strong>Jornada:</strong>
+
+                            <span>
+                                {{ $offer->day }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="offer-detail-item">
+
+                            <i class="fa-solid fa-laptop"></i>
+
+                            <strong>Modalidad:</strong>
+
+                            <span>
+                                {{ $offer->modality }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="offer-detail-item">
+
+                            <i class="fa-solid fa-calendar"></i>
+
+                            <strong>Inicio:</strong>
+
+                            <span>
+                                {{ \Carbon\Carbon::parse($offer->start_date)->format('d/m/Y') }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="offer-detail-item">
+
+                            <i class="fa-solid fa-calendar-check"></i>
+
+                            <strong>Finalización:</strong>
+
+                            <span>
+                                {{ \Carbon\Carbon::parse($offer->end_date)->format('d/m/Y') }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="offer-detail-item">
+
+                            <i class="fa-solid fa-users"></i>
+
+                            <strong>Cupos disponibles:</strong>
+
+                            <span>
+                                {{ $offer->available_quota }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="modal-footer">
+
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                        >
+
+                            Cerrar
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    @empty
+
+        <div class="offer-slide active">
+
+            <div
+                style="
+                    height:100%;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    flex-direction:column;
+                    background:#276f00;
+                    color:white;
+                    text-align:center;
+                    padding:40px;
+                "
+            >
+
+                <i
+                    class="fa-solid fa-graduation-cap"
+                    style="font-size:50px;margin-bottom:20px;"
+                ></i>
+
+                <h3>
+                    No hay ofertas disponibles
+                </h3>
+
+                <p>
+                    Actualmente no hay ofertas de formación activas.
+                </p>
+
+            </div>
+
+        </div>
+
+    @endforelse
+
+</div>
 
 
 
@@ -339,33 +402,20 @@
                  INDICADORES
             ================================================== -->
 
-            <div class="offer-dots">
+        <div class="offer-dots">
+
+            @foreach($offers as $index => $offer)
 
                 <button
                     type="button"
-                    class="offer-dot active"
-                    data-slide="0"
+                    class="offer-dot {{ $index === 0 ? 'active' : '' }}"
+                    data-slide="{{ $index }}"
+                    aria-label="Ver oferta {{ $index + 1 }}"
                 ></button>
 
-                <button
-                    type="button"
-                    class="offer-dot"
-                    data-slide="1"
-                ></button>
+            @endforeach
 
-                <button
-                    type="button"
-                    class="offer-dot"
-                    data-slide="2"
-                ></button>
-
-                <button
-                    type="button"
-                    class="offer-dot"
-                    data-slide="3"
-                ></button>
-
-            </div>
+        </div>
 
         </div>
 
@@ -672,11 +722,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const btnNext =
         document.getElementById('offerNext');
 
-
-    if (
-        slides.length > 0 &&
-        dots.length > 0
-    ) {
+    if (slides.length > 0) {
 
         let currentSlide = 0;
         let autoplay;
@@ -2746,6 +2792,75 @@ document.addEventListener('DOMContentLoaded', function () {
             18px;
 
     }
+    /* =========================================================
+   DETALLES DE OFERTA - MODAL
+========================================================= */
+
+.offer-detail-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 12px 0;
+
+    border-bottom: 1px solid #eeeeee;
+
+    font-size: .95rem;
+
+}
+
+
+.offer-detail-item i {
+
+    width: 25px;
+
+    color: #39a900;
+
+    text-align: center;
+
+}
+
+
+.offer-detail-item strong {
+
+    color: #2d3748;
+
+}
+
+
+.offer-detail-item span {
+
+    color: #636b77;
+
+    margin-left: auto;
+
+    text-align: right;
+
+}
+
+
+.modal-content {
+
+    border-radius: 20px;
+
+}
+
+
+.modal-header {
+
+    border-bottom: 1px solid #eeeeee;
+
+}
+
+
+.modal-footer {
+
+    border-top: 1px solid #eeeeee;
+
+}
 
 }
 

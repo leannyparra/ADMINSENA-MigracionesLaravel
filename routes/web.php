@@ -11,8 +11,11 @@ use App\Http\Controllers\ApprenticeController;
 use App\Http\Controllers\CourseTeacherController;
 use App\Http\Controllers\AuthController;
 
+use App\Http\Controllers\MainController;
+use App\Http\Controllers\OfferController;
+
 //main
-Route::get('/nosotros', function () {return view('main'); })->name('nosotros');
+Route::get('/nosotros', [MainController::class, 'index'])->name('nosotros');
 
 //login
 Route::get('/login', function () { return view('auth.login'); })->name('login');
@@ -84,6 +87,17 @@ Route::get('apprentice/list',[ApprenticeController::class,'index'])->name('appre
 Route::get('apprentice/create',[ApprenticeController::class,'create'])->name('apprentice.create');
 Route::get('apprentice/{apprentice}',[ApprenticeController::class,'show'])->name('apprentice.show');
 Route::post('apprentice/store',[ApprenticeController::class,'store'])->name('apprentice.store');
+
+//rutas de offers
+Route::get('offer/list', [OfferController::class, 'index'])->name('offer.index');
+Route::get('offer/create', [OfferController::class, 'create'])->name('offer.create');
+Route::post('offer/store', [OfferController::class, 'store'])->name('offer.store');
+Route::get('offer/{offer}/editar', [OfferController::class, 'edit'])->name('offer.edit');
+
+Route::put('offer/{offer}', [OfferController::class, 'update'])->name('offer.update');
+Route::delete('offer/{offer}', [OfferController::class, 'destroy'])->name('offer.destroy');
+Route::get('offer/{offer}', [OfferController::class, 'show'])->name('offer.show');
+
 
 // Rutas para CourseTeacher--PIVOTE
 Route::get('course-teacher/create',[CourseTeacherController::class,'create']);

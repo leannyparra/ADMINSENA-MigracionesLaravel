@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Offer;
+
 class Course extends Model
 {
     use HasFactory;
@@ -28,5 +30,12 @@ class Course extends Model
     }
     public function teachers(){
         return $this->belongsToMany('App\Models\Teacher', 'course_teachers');
+    }
+
+
+
+        public function offers()
+    {
+        return $this->hasMany(Offer::class);
     }
 }

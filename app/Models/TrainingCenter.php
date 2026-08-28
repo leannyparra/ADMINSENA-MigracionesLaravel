@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Offer;
+
 class TrainingCenter extends Model
 {
     use HasFactory;
@@ -26,5 +28,13 @@ class TrainingCenter extends Model
     // Un Centro de Formación tiene muchos Cursos
     public function courses(){
         return $this->hasMany('App\Models\Course');
+    }
+
+
+
+
+        public function offers()
+    {
+        return $this->hasMany(Offer::class);
     }
 }
