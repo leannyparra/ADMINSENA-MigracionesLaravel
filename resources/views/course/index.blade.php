@@ -1,185 +1,855 @@
 @extends('Layout.app')
 
 @section('content')
-<div class="container my-5">
-    
-    <!-- Encabezado Principal -->
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
-        <div>
-            <h1 class="fw-bold text-dark m-0" style="font-size: 1.8rem; letter-spacing: -0.5px;">Programas / Fichas</h1>
-        </div>
-        <div>
-            <a href="{{ url('course/create') }}" class="btn text-white fw-semibold px-4 py-2 shadow-sm custom-btn-create" style="background-color: #39A900; font-size: 0.85rem; letter-spacing: 0.5px; border-radius: 8px;">
-                NUEVA FICHA
-            </a>
-        </div>
-    </div>
 
-    <!-- Bloque Principal Tipo Tarjeta Plana -->
-    <div class="bg-white border rounded-3 shadow-sm overflow-hidden">
-        
-        <!-- Barra de Control Superior -->
-        <div class="p-4 bg-light border-bottom d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
-            <h5 class="fw-bold text-dark m-0" style="font-size: 1.05rem;">Listado</h5>
-            
-            <!-- Buscador -->
-            <form action="{{ url('course/list') }}" method="GET" class="d-flex align-items-center position-relative" style="max-width: 320px; width: 100%;">
-                <input class="form-control bg-white border pe-5 py-2 small search-input-flat" type="search" name="search" placeholder="Buscar..." value="{{ request('search') }}" style="font-size: 0.9rem; border-radius: 6px;">
-                <button class="btn p-0 position-absolute end-0 me-3 d-flex align-items-center justify-content-center text-secondary opacity-75" type="submit" style="height: 100%; background: none; border: none;">
-                    <i class="bi bi-search"></i>
-                </button>
-            </form>
-        </div>
-
-        <!-- Tabla Plana de Cursos -->
-        <div class="table-responsive">
-            <table class="table table-hover align-middle m-0 style-flat-table">
-                <thead class="table-light text-secondary uppercase small fw-semibold border-bottom">
-                    <tr>
-                        <th class="px-4 py-3" style="width: 90px;">ID</th>
-                        <th class="px-4 py-3">Número de Ficha</th>
-                        <th class="px-4 py-3">Jornada</th>
-                        <th class="px-4 py-3">Área</th>
-                        <th class="px-4 py-3">Centro de Formación</th>
-                        <th class="px-4 py-3 text-end" style="width: 150px;">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="text-dark">
-                    @forelse($courses as $course)
-                        <tr>
-                            <!-- ID -->
-                            <td class="px-4 py-3 text-secondary fw-medium">#{{ $course->id }}</td>
-                            
-                            <!-- Ficha -->
-                            <td class="px-4 py-3 fw-bold text-dark">
-                                <a href="{{ url('course/' . $course->id) }}" class="text-decoration-none text-dark hover-link-sena">
-                                    {{ $course->course_number }}
-                                </a>
-                            </td>
-                            
-                            <!-- Jornada -->
-                            <td class="px-4 py-3 text-secondary" style="font-size: 0.95rem;">
-                                {{ $course->day }}
-                            </td>
-                            
-                            <!-- Área -->
-                            <td class="px-4 py-3 text-secondary">
-                                {{ $course->area?->name }}
-                            </td>
-                            
-                            <!-- Centro -->
-                            <td class="px-4 py-3 text-secondary">
-                                <span class="badge bg-light text-dark border px-2 py-1.5 fw-normal" style="font-size: 0.85rem; border-radius: 6px;">
-                                    {{ $course->training_Center?->name }}
-                                </span>
-                            </td>
-                            
-                            <!-- Acciones -->
-                            <td class="px-4 py-3 text-end">
-                                <div class="d-inline-flex gap-2">
-                                    <a href="{{ route('course.show', $course->id) }}" class="btn btn-sm btn-light border text-secondary px-2.5 py-1.5 custom-action-btn" style="border-radius: 6px;">
-                                        Ver
-                                    </a>
-                                    <a href="{{ route('course.edit', $course->id) }}" class="btn btn-sm btn-light border text-secondary px-2.5 py-1.5 custom-action-btn" style="border-radius: 6px;">
-                                        Editar
-                                    </a>
-                        <form action="{{ route('course.destroy', $course->id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('delete')
-                            <button type="submit" class="btn-delete-custom" title="Eliminar Aprendiz" onclick="return confirm('¿Estás seguro de que deseas eliminar este curso?')">
-                                <!-- Icono de papelera en SVG puro (Nunca se va a romper) -->
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 20px; height: 20px;">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                                </svg>
-                            </button>
-                        </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="6" class="text-center py-5 text-secondary">
-                                No se encontraron cursos o fichas registradas.
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Paginación -->
-        @if(method_exists($courses, 'links'))
-            <div class="p-4 bg-light border-top d-flex justify-content-center">
-                {{ $courses->links() }}
-            </div>
-        @endif
-
-    </div>
-</div>
-
-<!-- Estilos CSS Personalizados -->
 <style>
-    .custom-btn-create {
-        transition: background-color 0.2s ease, transform 0.1s ease;
-    }
-    .custom-btn-create:hover {
-        background-color: #2e8500 !important;
-    }
-    .custom-btn-create:active {
-        transform: scale(0.98);
+    /* =====================================================
+       ESTILOS GENERALES
+    ===================================================== */
+
+    body {
+        background: #f5f7f9 !important;
     }
 
-    .search-input-flat:focus {
-        border-color: #39A900 !important;
-        box-shadow: 0 0 0 3px rgba(57, 169, 0, 0.15) !important;
+    .courses-page {
+        padding: 35px 0 50px;
     }
 
-    .style-flat-table th {
-        font-size: 0.8rem;
-        letter-spacing: 0.5px;
+    /* =====================================================
+       ENCABEZADO
+    ===================================================== */
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 28px;
+    }
+
+    .page-title-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .page-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 15px;
+        background: #e8f6df;
+        color: #39A900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        box-shadow: 0 4px 12px rgba(57, 169, 0, 0.08);
+    }
+
+    .page-title {
+        margin: 0;
+        font-size: 1.75rem;
+        font-weight: 750;
+        color: #17212b;
+        letter-spacing: -0.6px;
+    }
+
+    .page-subtitle {
+        margin: 4px 0 0;
+        color: #7b8794;
+        font-size: 0.9rem;
+    }
+
+    /* =====================================================
+       BOTÓN NUEVO
+    ===================================================== */
+
+    .btn-new-course {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #39A900;
+        color: white !important;
+        border: none;
+        padding: 11px 18px;
+        border-radius: 11px;
+        font-size: 0.86rem;
+        font-weight: 650;
+        text-decoration: none;
+        box-shadow: 0 5px 14px rgba(57, 169, 0, 0.18);
+        transition: all .25s ease;
+    }
+
+    .btn-new-course:hover {
+        background: #2e8700;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(57, 169, 0, 0.25);
+    }
+
+    /* =====================================================
+       ESTADÍSTICA
+    ===================================================== */
+
+    .course-summary {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 22px;
+    }
+
+    .summary-card {
+        background: white;
+        border: 1px solid #edf0f2;
+        border-radius: 14px;
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 3px 12px rgba(20, 30, 40, 0.035);
+    }
+
+    .summary-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: #f0f8eb;
+        color: #39A900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .summary-label {
+        font-size: 0.72rem;
+        color: #89929c;
+        margin: 0;
         text-transform: uppercase;
-        background-color: #f8f9fa;
-    }
-    
-    .style-flat-table tr {
-        border-bottom: 1px solid #efefef;
+        letter-spacing: .5px;
+        font-weight: 650;
     }
 
-    .custom-action-btn {
-        background-color: #ffffff !important;
-        transition: all 0.2s ease;
-    }
-    .custom-action-btn:hover {
-        background-color: #f4f4f4 !important;
-        color: #39A900 !important;
-        border-color: #39A900 !important;
+    .summary-number {
+        font-size: 1.15rem;
+        color: #17212b;
+        font-weight: 750;
+        margin: 1px 0 0;
     }
 
-    .hover-link-sena {
-        transition: color 0.15s ease;
+    /* =====================================================
+       CONTENEDOR PRINCIPAL
+    ===================================================== */
+
+    .courses-card {
+        background: white;
+        border: 1px solid #e9edf0;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(25, 35, 45, 0.055);
     }
-    .hover-link-sena:hover {
-        color: #39A900 !important;
+
+    /* =====================================================
+       BARRA SUPERIOR
+    ===================================================== */
+
+    .courses-toolbar {
+        padding: 20px 24px;
+        border-bottom: 1px solid #edf0f2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        background: #fff;
     }
-        .btn-delete-custom {
-        background-color: #fef2f2; /* Fondo rojo/crema muy suave */
-        color: #ef4444;            /* Icono rojo */
-        border: 1px solid #fee2e2;  /* Borde sutil */
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;       /* Esquinas suavizadas idénticas al botón verde */
+
+    .toolbar-title {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #26323d;
+    }
+
+    .toolbar-description {
+        margin: 3px 0 0;
+        color: #929ba4;
+        font-size: .78rem;
+    }
+
+    /* =====================================================
+       BUSCADOR
+    ===================================================== */
+
+    .search-wrapper {
+        position: relative;
+        width: 290px;
+    }
+
+    .search-wrapper i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #98a1aa;
+        font-size: 15px;
+        pointer-events: none;
+    }
+
+    .search-input {
+        width: 100%;
+        height: 42px;
+        border: 1px solid #e1e6ea;
+        border-radius: 11px;
+        padding: 0 15px 0 40px;
+        font-size: .85rem;
+        color: #343d46;
+        background: #f9fafb;
+        outline: none;
+        transition: all .2s ease;
+    }
+
+    .search-input::placeholder {
+        color: #a0a8b0;
+    }
+
+    .search-input:focus {
+        background: white;
+        border-color: #39A900;
+        box-shadow: 0 0 0 4px rgba(57, 169, 0, .10);
+    }
+
+    /* =====================================================
+       TABLA
+    ===================================================== */
+
+    .courses-table {
+        width: 100%;
+        margin: 0;
+        border-collapse: collapse;
+    }
+
+    .courses-table thead {
+        background: #f8fafb;
+    }
+
+    .courses-table thead th {
+        padding: 13px 18px;
+        color: #89939d;
+        font-size: .69rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .65px;
+        border-bottom: 1px solid #edf0f2;
+        white-space: nowrap;
+    }
+
+    .courses-table tbody tr {
+        transition: all .2s ease;
+        border-bottom: 1px solid #f0f2f4;
+    }
+
+    .courses-table tbody tr:last-child {
+        border-bottom: none;
+    }
+
+    .courses-table tbody tr:hover {
+        background: #fbfdf9;
+    }
+
+    .courses-table td {
+        padding: 17px 18px;
+        vertical-align: middle;
+        color: #4d5862;
+        font-size: .84rem;
+    }
+
+    /* =====================================================
+       ID
+    ===================================================== */
+
+    .course-id {
+        color: #9aa3ab;
+        font-size: .78rem;
+        font-weight: 650;
+    }
+
+    /* =====================================================
+       FICHA
+    ===================================================== */
+
+    .course-number-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+    }
+
+    .course-number-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: #edf8e8;
+        color: #39A900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .course-number {
+        color: #202a33;
+        font-weight: 700;
+        text-decoration: none;
+        transition: color .2s ease;
+    }
+
+    .course-number:hover {
+        color: #39A900;
+    }
+
+    .course-label {
+        display: block;
+        color: #a0a7ae;
+        font-size: .68rem;
+        margin-top: 1px;
+    }
+
+    /* =====================================================
+       BADGES
+    ===================================================== */
+
+    .info-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: .73rem;
+        font-weight: 650;
+        white-space: nowrap;
+    }
+
+    .badge-day {
+        background: #f1f5f9;
+        color: #52606d;
+    }
+
+    .badge-area {
+        background: #f5f7f8;
+        color: #596570;
+    }
+
+    .badge-center {
+        background: #edf8e8;
+        color: #347c0b;
+    }
+
+    /* =====================================================
+       ACCIONES
+    ===================================================== */
+
+    .actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .action-btn {
+        width: 35px;
+        height: 35px;
+        border-radius: 9px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        padding: 0;                /* Quita el padding de Bootstrap que lo volvía óvalo */
+        text-decoration: none;
+        border: 1px solid #e4e8eb;
+        background: white;
+        color: #7a858f;
+        transition: all .2s ease;
+        padding: 0;
     }
 
-    .btn-delete-custom:hover {
-        background-color: #ef4444; /* Se llena de rojo al pasar el mouse */
-        color: #ffffff;            /* El icono se vuelve blanco */
+    .action-btn:hover {
+        border-color: #39A900;
+        background: #f0f9eb;
+        color: #39A900;
+        transform: translateY(-1px);
+    }
+
+    .delete-btn {
+        width: 35px;
+        height: 35px;
+        border-radius: 9px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #fee2e2;
+        background: #fff7f7;
+        color: #ef4444;
+        cursor: pointer;
+        padding: 0;
+        transition: all .2s ease;
+    }
+
+    .delete-btn:hover {
+        background: #ef4444;
+        color: white;
         border-color: #ef4444;
+        transform: translateY(-1px);
+    }
+
+    /* =====================================================
+       ESTADO VACÍO
+    ===================================================== */
+
+    .empty-state {
+        padding: 65px 20px !important;
+        text-align: center;
+    }
+
+    .empty-icon {
+        width: 65px;
+        height: 65px;
+        border-radius: 18px;
+        background: #f2f5f7;
+        color: #9aa4ad;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        font-size: 27px;
+    }
+
+    .empty-title {
+        color: #4c5862;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+
+    .empty-text {
+        color: #9aa3ab;
+        font-size: .82rem;
+        margin: 0;
+    }
+
+    /* =====================================================
+       PAGINACIÓN
+    ===================================================== */
+
+    .pagination-wrapper {
+        padding: 17px 24px;
+        border-top: 1px solid #edf0f2;
+        background: #fafbfc;
+        display: flex;
+        justify-content: center;
+    }
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 900px) {
+
+        .page-header {
+            align-items: flex-start;
+        }
+
+        .courses-toolbar {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .search-wrapper {
+            width: 100%;
+        }
+
+        .course-summary {
+            overflow-x: auto;
+        }
+
+        .courses-table {
+            min-width: 850px;
+        }
+    }
+
+    @media (max-width: 576px) {
+
+        .courses-page {
+            padding: 20px 0 35px;
+        }
+
+        .page-header {
+            flex-direction: column;
+        }
+
+        .btn-new-course {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .page-title {
+            font-size: 1.45rem;
+        }
+
+        .page-icon {
+            width: 45px;
+            height: 45px;
+        }
     }
 </style>
+
+<div class="container courses-page">
+
+```
+<!-- =====================================================
+     ENCABEZADO
+====================================================== -->
+
+<div class="page-header">
+
+    <div class="page-title-wrapper">
+
+        <div class="page-icon">
+            <i class="bi bi-mortarboard-fill"></i>
+        </div>
+
+        <div>
+            <h1 class="page-title">Programas y Fichas</h1>
+
+            <p class="page-subtitle">
+                Gestiona los programas de formación y sus fichas.
+            </p>
+        </div>
+
+    </div>
+
+    <a href="{{ url('course/create') }}" class="btn-new-course">
+        <i class="bi bi-plus-lg"></i>
+        Nueva ficha
+    </a>
+
+</div>
+
+
+<!-- =====================================================
+     RESUMEN
+====================================================== -->
+
+<div class="course-summary">
+
+    <div class="summary-card">
+
+        <div class="summary-icon">
+            <i class="bi bi-collection"></i>
+        </div>
+
+        <div>
+            <p class="summary-label">Total de fichas</p>
+
+            <p class="summary-number">
+                {{ $courses->count() }}
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     CONTENEDOR
+====================================================== -->
+
+<div class="courses-card">
+
+    <!-- Barra superior -->
+
+    <div class="courses-toolbar">
+
+        <div>
+            <h5 class="toolbar-title">
+                Listado de programas
+            </h5>
+
+            <p class="toolbar-description">
+                Consulta y administra las fichas registradas.
+            </p>
+        </div>
+
+
+        <form action="{{ url('course/list') }}"
+              method="GET"
+              class="search-wrapper">
+
+            <i class="bi bi-search"></i>
+
+            <input
+                type="search"
+                name="search"
+                class="search-input"
+                placeholder="Buscar ficha, área o centro..."
+                value="{{ request('search') }}"
+            >
+
+        </form>
+
+    </div>
+
+
+    <!-- =================================================
+         TABLA
+    ================================================== -->
+
+    <div class="table-responsive">
+
+        <table class="courses-table">
+
+            <thead>
+
+                <tr>
+
+                    <th style="width: 75px;">
+                        ID
+                    </th>
+
+                    <th>
+                        Ficha
+                    </th>
+
+                    <th>
+                        Jornada
+                    </th>
+
+                    <th>
+                        Área
+                    </th>
+
+                    <th>
+                        Centro de formación
+                    </th>
+
+                    <th class="text-end" style="width: 150px;">
+                        Acciones
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                @forelse($courses as $course)
+
+                    <tr>
+
+                        <!-- ID -->
+
+                        <td>
+                            <span class="course-id">
+                                #{{ $course->id }}
+                            </span>
+                        </td>
+
+
+                        <!-- FICHA -->
+
+                        <td>
+
+                            <div class="course-number-wrapper">
+
+                                <div class="course-number-icon">
+                                    <i class="bi bi-journal-text"></i>
+                                </div>
+
+                                <div>
+
+                                    <a
+                                        href="{{ url('course/' . $course->id) }}"
+                                        class="course-number"
+                                    >
+                                        {{ $course->course_number }}
+                                    </a>
+
+                                    <span class="course-label">
+                                        Número de ficha
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- JORNADA -->
+
+                        <td>
+
+                            <span class="info-badge badge-day">
+
+                                <i class="bi bi-clock"></i>
+
+                                {{ $course->day }}
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- ÁREA -->
+
+                        <td>
+
+                            @if($course->area)
+
+                                <span class="info-badge badge-area">
+
+                                    <i class="bi bi-diagram-3"></i>
+
+                                    {{ $course->area->name }}
+
+                                </span>
+
+                            @else
+
+                                <span class="text-muted small">
+                                    Sin área
+                                </span>
+
+                            @endif
+
+                        </td>
+
+
+                        <!-- CENTRO -->
+
+                        <td>
+
+                            @if($course->training_Center)
+
+                                <span class="info-badge badge-center">
+
+                                    <i class="bi bi-building"></i>
+
+                                    {{ $course->training_Center->name }}
+
+                                </span>
+
+                            @else
+
+                                <span class="text-muted small">
+                                    Sin centro
+                                </span>
+
+                            @endif
+
+                        </td>
+
+
+                        <!-- ACCIONES -->
+
+                        <td>
+
+                            <div class="actions">
+
+                                <!-- VER -->
+
+                                <a
+                                    href="{{ route('course.show', $course->id) }}"
+                                    class="action-btn"
+                                    title="Ver detalles"
+                                >
+                                    <i class="bi bi-eye"></i>
+                                </a>
+
+
+                                <!-- EDITAR -->
+
+                                <a
+                                    href="{{ route('course.edit', $course->id) }}"
+                                    class="action-btn"
+                                    title="Editar ficha"
+                                >
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+
+
+                                <!-- ELIMINAR -->
+
+                                <form
+                                    action="{{ route('course.destroy', $course->id) }}"
+                                    method="POST"
+                                    class="d-inline"
+                                >
+
+                                    @csrf
+                                    @method('delete')
+
+                                    <button
+                                        type="submit"
+                                        class="delete-btn"
+                                        title="Eliminar ficha"
+                                        onclick="return confirm('¿Estás seguro de que deseas eliminar esta ficha?')"
+                                    >
+
+                                        <i class="bi bi-trash3"></i>
+
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                @empty
+
+                    <tr>
+
+                        <td colspan="6" class="empty-state">
+
+                            <div class="empty-icon">
+                                <i class="bi bi-journal-x"></i>
+                            </div>
+
+                            <div class="empty-title">
+                                No hay fichas registradas
+                            </div>
+
+                            <p class="empty-text">
+                                Cuando registres una nueva ficha aparecerá aquí.
+                            </p>
+
+                        </td>
+
+                    </tr>
+
+                @endforelse
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- =================================================
+         PAGINACIÓN
+    ================================================== -->
+
+    @if(method_exists($courses, 'links') && $courses->hasPages())
+
+        <div class="pagination-wrapper">
+
+            {{ $courses->links() }}
+
+        </div>
+
+    @endif
+
+</div>
+```
+
+</div>
+
 @endsection

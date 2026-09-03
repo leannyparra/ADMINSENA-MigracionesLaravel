@@ -38,7 +38,7 @@ public function up(): void
 
         $table->string('status')->default('Activa');
 
-        $table->string('image')->nullable();
+        $table->string('image_url')->nullable();
 
         $table->timestamps();
     });

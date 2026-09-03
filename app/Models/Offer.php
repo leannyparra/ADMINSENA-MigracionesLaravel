@@ -20,7 +20,7 @@ class Offer extends Model
         'quota',
         'available_quota',
         'status',
-        'image',
+        'image_url',
     ];
 
     // Una oferta pertenece a un curso

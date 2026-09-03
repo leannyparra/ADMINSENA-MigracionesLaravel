@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Offer;
 use App\Models\Course;
 use App\Models\TrainingCenter;
@@ -35,55 +36,69 @@ class OfferController extends Controller
 
 
     // GUARDAR OFERTA
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
+public function store(Request $request)
+{
+    $validated = $request->validate([
 
-            'offer_number' => 'required|string|max:255|unique:offers,offer_number',
+        'offer_number' =>
+            'required|string|max:255|unique:offers,offer_number',
 
-            'course_id' => 'required|exists:courses,id',
+        'course_id' =>
+            'required|exists:courses,id',
 
-            'training_center_id' => 'required|exists:training_centers,id',
+        'training_center_id' =>
+            'required|exists:training_centers,id',
 
-            'day' => 'required|string|max:255',
+        'day' =>
+            'required|string|max:255',
 
-            'start_date' => 'required|date',
+        'start_date' =>
+            'required|date',
 
-            'end_date' => 'required|date|after_or_equal:start_date',
+        'end_date' =>
+            'required|date|after_or_equal:start_date',
 
-            'modality' => 'required|string|max:255',
+        'modality' =>
+            'required|string|max:255',
 
-            'quota' => 'required|integer|min:1',
+        'quota' =>
+            'required|integer|min:1',
 
-            'status' => 'required|string|max:255',
+        'status' =>
+            'required|string|max:255',
 
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-
-        ]);
-
-
-        // Cupos disponibles inicialmente
-        $validated['available_quota'] = $validated['quota'];
-
-
-        // Guardar imagen si existe
-        if ($request->hasFile('image')) {
-
-            $validated['image'] =
-                $request->file('image')->store('offers', 'public');
-
-        }
+        'image' =>
+            'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+    ]);
 
 
-        // Crear oferta
-        Offer::create($validated);
+    // Cupos disponibles inicialmente
+    $validated['available_quota'] = $validated['quota'];
 
 
-        return redirect()
-            ->route('offer.index')
-            ->with('success', 'La oferta fue creada correctamente.');
+    // Guardar imagen
+    if ($request->hasFile('image')) {
+
+        $validated['image_url'] =
+            $request->file('image')->store('offers', 'public');
     }
 
+
+    // El campo image no existe en la tabla
+    unset($validated['image']);
+
+
+    // Crear oferta
+    Offer::create($validated);
+
+
+    return redirect()
+        ->route('offer.index')
+        ->with(
+            'success',
+            'La oferta fue creada correctamente.'
+        );
+}
 
     // MOSTRAR OFERTA
     public function show(Offer $offer)
@@ -102,8 +117,7 @@ class OfferController extends Controller
     {
         $courses = Course::orderBy('course_number')->get();
 
-        $trainingCenters =
-            TrainingCenter::orderBy('name')->get();
+        $trainingCenters = TrainingCenter::orderBy('name')->get();
 
         return view('offer.edit', compact(
             'offer',
@@ -150,9 +164,10 @@ class OfferController extends Controller
         ]);
 
 
-        // Ajustar cupos disponibles
+        // Calcular diferencia de cupos
         $difference =
             $validated['quota'] - $offer->quota;
+
 
         $validated['available_quota'] =
             max(
@@ -161,16 +176,32 @@ class OfferController extends Controller
             );
 
 
-        // Actualizar imagen
+        // ACTUALIZAR IMAGEN
         if ($request->hasFile('image')) {
 
-            $validated['image'] =
+            // Eliminar imagen anterior
+            if (
+                $offer->image_url &&
+                Storage::disk('public')->exists($offer->image_url)
+            ) {
+                Storage::disk('public')->delete(
+                    $offer->image_url
+                );
+            }
+
+
+            // Guardar nueva imagen
+            $validated['image_url'] =
                 $request->file('image')
                     ->store('offers', 'public');
-
         }
 
 
+        // No guardar el campo temporal image
+        unset($validated['image']);
+
+
+        // Actualizar oferta
         $offer->update($validated);
 
 
@@ -186,7 +217,20 @@ class OfferController extends Controller
     // ELIMINAR
     public function destroy(Offer $offer)
     {
+        // Eliminar imagen asociada
+        if (
+            $offer->image_url &&
+            Storage::disk('public')->exists($offer->image_url)
+        ) {
+            Storage::disk('public')->delete(
+                $offer->image_url
+            );
+        }
+
+
+        // Eliminar oferta
         $offer->delete();
+
 
         return redirect()
             ->route('offer.index')

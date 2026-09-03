@@ -1,179 +1,1328 @@
 @extends('Layout.app')
 
 @section('content')
-<!-- Contenedor con ancho máximo de 850px para evitar tablas excesivamente anchas -->
-<div class="container my-5" style="max-width: 850px;">
-    
-    <!-- Encabezado Principal -->
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
-        <div>
-            <h1 class="fw-bold text-dark m-0" style="font-size: 1.8rem; letter-spacing: -0.5px;">Equipos de Cómputo</h1>
-            <p class="text-secondary small m-0 mt-1">Administración y control del inventario de computadores del ambiente.</p>
+
+<div class="computers-page">
+
+```
+<!-- =========================
+     ENCABEZADO
+========================== -->
+
+<div class="computers-header">
+
+    <div class="header-info">
+
+        <div class="header-icon">
+            <i class="bi bi-pc-display"></i>
         </div>
-        <!-- Botón Nuevo Computador -->
+
         <div>
-            <a href="{{ url('computer/create') }}" class="btn text-white fw-semibold px-4 py-2 shadow-sm custom-btn-create" style="background-color: #39A900; font-size: 0.85rem; letter-spacing: 0.5px;">
-                <i class="bi bi-plus-lg me-1"></i> NUEVO COMPUTADOR
-            </a>
+            <h1>Equipos de cómputo</h1>
+
+            <p>
+                Administra y controla los computadores asignados al centro.
+            </p>
         </div>
+
     </div>
 
-    <!-- Bloque Principal Tipo Tarjeta Plana -->
-    <div class="bg-white border rounded-3 shadow-sm overflow-hidden">
-        
-        <!-- Barra de Control Superior -->
-        <div class="p-4 bg-light border-bottom d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
-            <h5 class="fw-bold text-dark m-0" style="font-size: 1.05rem;">Inventario de Equipos</h5>
-            
-            <!-- Buscador -->
-            <form action="{{ url('computer/list') }}" method="GET" class="d-flex align-items-center position-relative" style="max-width: 280px; width: 100%;">
-                <input class="form-control bg-white border pe-5 py-2 small search-input-flat" type="search" name="search" placeholder="Buscar equipo..." value="{{ request('search') }}" style="font-size: 0.9rem; border-radius: 6px;">
-                <button class="btn p-0 position-absolute end-0 me-3 d-flex align-items-center justify-content-center text-secondary opacity-75" type="submit" style="height: 100%;">
-                    <i class="bi bi-search"></i>
-                </button>
-            </form>
-        </div>
 
-        <!-- Tabla Ajustada y Despegada de los Bordes -->
-        <div class="table-responsive">
-            <table class="table table-hover align-middle m-0 style-flat-table">
-                <thead class="table-light text-secondary uppercase small fw-semibold border-bottom">
-                    <tr>
-                        <!-- px-5 para despegar el ID de la izquierda -->
-                        <th class="px-5 py-3" style="width: 120px;">ID</th>
-                        <th class="py-3">Número de Equipo</th>
-                        <th class="py-3">Marca</th>
-                        <!-- px-5 para despegar Acciones de la derecha -->
-                        <th class="px-5 py-3 text-end" style="width: 180px;">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="text-dark">
-                    @forelse($computers as $computer)
-                        <tr>
-                            <!-- ID con margen despegado -->
-                            <td class="px-5 py-3 fw-medium text-secondary">#{{ $computer->id }}</td>
-                            
-                            <!-- Número del Computador -->
-                            <td class="py-3 fw-bold text-dark">
-                                <a href="{{ url('computer/' . $computer->id) }}" class="text-decoration-none text-dark hover-link-sena">
-                                    <i class="bi bi-laptop me-2 text-secondary"></i> Computador {{ $computer->number }}
-                                </a>
-                            </td>
-                            
-                            <!-- Marca -->
-                            <td class="py-3 text-secondary fw-medium">
-                                {{ $computer->brand }}
-                            </td>
-                            
-                            <!-- Acciones con margen despegado -->
-                            <td class="px-5 py-3 text-end">
-                                <div class="d-inline-flex gap-2 align-items-center justify-content-end">
-                                    <!-- 👁️ Ver detalles -->
-                                    <a href="{{ route('computer.show', $computer->id) }}" class="btn btn-sm btn-light border text-secondary custom-action-btn" title="Ver Detalles">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                    <!-- 📝 Editar -->
-                                    <a href="{{ route('computer.edit', $computer->id) }}" class="btn btn-sm btn-light border text-secondary custom-action-btn" title="Editar">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <!-- 🗑️ Eliminar -->
-                                    <form action="{{ route('computer.destroy', $computer->id) }}" method="POST" class="d-inline m-0 p-0">
-                                        @csrf
-                                        @method('delete')
-                                        <button type="submit" class="btn-delete-custom" title="Eliminar Equipo" onclick="return confirm('¿Estás seguro de que deseas eliminar este equipo?')">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 18px; height: 18px;">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                                            </svg>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="text-center py-5 text-secondary">
-                                <i class="bi bi-pc-display fs-1 opacity-50 d-block mb-2"></i>
-                                No se encontraron equipos de cómputo registrados.
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+    <a
+        href="{{ url('computer/create') }}"
+        class="create-computer-btn"
+    >
+        <i class="bi bi-plus-lg"></i>
+        Nuevo computador
+    </a>
 
-        <!-- Paginación -->
-        @if(method_exists($computers, 'links') && $computers->hasPages())
-            <div class="p-4 bg-light border-top d-flex justify-content-center">
-                {{ $computers->links() }}
-            </div>
-        @endif
-
-    </div>
 </div>
 
-<!-- Estilos CSS -->
+
+<!-- =========================
+     TARJETA DE RESUMEN
+========================== -->
+
+<div class="computers-summary">
+
+    <div class="summary-icon">
+        <i class="bi bi-laptop"></i>
+    </div>
+
+    <div class="summary-content">
+
+        <span>TOTAL DE EQUIPOS</span>
+
+        <strong>{{ $computers->count() }}</strong>
+
+    </div>
+
+    <div class="summary-decoration">
+        <i class="bi bi-pc-display-horizontal"></i>
+    </div>
+
+</div>
+
+
+<!-- =========================
+     CONTENEDOR PRINCIPAL
+========================== -->
+
+<div class="computers-container">
+
+    <!-- Barra superior -->
+
+    <div class="computers-toolbar">
+
+        <div>
+
+            <h2>
+                Inventario de equipos
+            </h2>
+
+            <p>
+                Consulta y administra los computadores registrados.
+            </p>
+
+        </div>
+
+
+        <!-- BUSCADOR -->
+
+        <form
+            action="{{ url('computer/list') }}"
+            method="GET"
+            class="search-form"
+        >
+
+            <div class="search-wrapper">
+
+                <i class="bi bi-search"></i>
+
+                <input
+                    type="search"
+                    name="search"
+                    placeholder="Buscar equipo o marca..."
+                    value="{{ request('search') }}"
+                >
+
+                @if(request('search'))
+
+                    <a
+                        href="{{ url('computer/list') }}"
+                        class="clear-search"
+                        title="Limpiar búsqueda"
+                    >
+                        <i class="bi bi-x"></i>
+                    </a>
+
+                @endif
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- =========================
+         TABLA
+    ========================== -->
+
+    <div class="table-wrapper">
+
+        <table class="computers-table">
+
+            <thead>
+
+                <tr>
+
+                    <th class="id-column">
+                        ID
+                    </th>
+
+                    <th>
+                        Equipo
+                    </th>
+
+                    <th>
+                        Marca
+                    </th>
+
+                    <th class="status-column">
+                        Estado
+                    </th>
+
+                    <th class="actions-column">
+                        Acciones
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                @forelse($computers as $computer)
+
+                    <tr>
+
+                        <!-- ID -->
+
+                        <td>
+
+                            <span class="computer-id">
+                                #{{ $computer->id }}
+                            </span>
+
+                        </td>
+
+
+                        <!-- EQUIPO -->
+
+                        <td>
+
+                            <div class="computer-name-wrapper">
+
+                                <div class="computer-mini-icon">
+                                    <i class="bi bi-laptop"></i>
+                                </div>
+
+                                <div>
+
+                                    <a
+                                        href="{{ url('computer/' . $computer->id) }}"
+                                        class="computer-name"
+                                    >
+                                        Computador {{ $computer->number }}
+                                    </a>
+
+                                    <span class="computer-subtitle">
+                                        Equipo registrado en el inventario
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- MARCA -->
+
+                        <td>
+
+                            <span class="brand-badge">
+
+                                <i class="bi bi-tag"></i>
+
+                                {{ $computer->brand }}
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- ESTADO -->
+
+                        <td>
+
+                            <span class="status-badge">
+
+                                <i class="bi bi-check-circle-fill"></i>
+
+                                Disponible
+
+                            </span>
+
+                        </td>
+
+
+                        <!-- ACCIONES -->
+
+                        <td>
+
+                            <div class="action-buttons">
+
+                                <!-- VER -->
+
+                                <a
+                                    href="{{ route('computer.show', $computer->id) }}"
+                                    class="action-btn view-btn"
+                                    title="Ver detalles"
+                                >
+                                    <i class="bi bi-eye"></i>
+                                </a>
+
+
+                                <!-- EDITAR -->
+
+                                <a
+                                    href="{{ route('computer.edit', $computer->id) }}"
+                                    class="action-btn edit-btn"
+                                    title="Editar equipo"
+                                >
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+
+
+                                <!-- ELIMINAR -->
+
+                                <form
+                                    action="{{ route('computer.destroy', $computer->id) }}"
+                                    method="POST"
+                                    class="delete-form"
+                                >
+
+                                    @csrf
+                                    @method('delete')
+
+                                    <button
+                                        type="submit"
+                                        class="action-btn delete-btn"
+                                        title="Eliminar equipo"
+                                        onclick="return confirm('¿Estás seguro de que deseas eliminar este equipo?')"
+                                    >
+
+                                        <i class="bi bi-trash3"></i>
+
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                @empty
+
+                    <tr>
+
+                        <td
+                            colspan="5"
+                            class="empty-cell"
+                        >
+
+                            <div class="empty-state">
+
+                                <div class="empty-icon">
+                                    <i class="bi bi-pc-display"></i>
+                                </div>
+
+                                <h3>
+                                    No hay equipos registrados
+                                </h3>
+
+                                <p>
+                                    No se encontraron computadores con los criterios de búsqueda.
+                                </p>
+
+                                <a
+                                    href="{{ url('computer/create') }}"
+                                    class="empty-button"
+                                >
+                                    <i class="bi bi-plus-lg"></i>
+                                    Registrar primer equipo
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                @endforelse
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+<!-- =========================
+     ESTILOS
+========================== -->
+
 <style>
-    .custom-btn-create:hover {
-        background-color: #2e8500 !important;
+
+    /* =========================
+       GENERAL
+    ========================== */
+
+    body {
+        background: #f6f8f7 !important;
     }
 
-    .search-input-flat:focus {
-        border-color: #39A900 !important;
-        box-shadow: 0 0 0 3px rgba(57, 169, 0, 0.15) !important;
+    .computers-page {
+
+        max-width: 1100px;
+
+        margin: 0 auto;
+
+        padding: 35px 25px 60px;
+
     }
 
-    .style-flat-table th {
-        font-size: 0.78rem;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-        background-color: #f8f9fa;
-    }
-    
-    .style-flat-table tr {
-        border-bottom: 1px solid #efefef;
-    }
 
-    /* Botones cuadrados homogéneos (36x36px) */
-    .custom-action-btn {
-        background-color: #ffffff !important;
-        width: 36px;
-        height: 36px;
-        border-radius: 8px !important;
-        display: inline-flex;
+    /* =========================
+       HEADER
+    ========================== */
+
+    .computers-header {
+
+        display: flex;
+
         align-items: center;
+
+        justify-content: space-between;
+
+        gap: 20px;
+
+        margin-bottom: 24px;
+
+    }
+
+    .header-info {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 15px;
+
+    }
+
+    .header-icon {
+
+        width: 55px;
+
+        height: 55px;
+
+        display: flex;
+
+        align-items: center;
+
         justify-content: center;
-        transition: all 0.2s ease;
-        padding: 0;
-    }
-    .custom-action-btn:hover {
-        background-color: #f4f4f4 !important;
-        color: #39A900 !important;
-        border-color: #39A900 !important;
+
+        border-radius: 16px;
+
+        background: linear-gradient(
+            135deg,
+            #39A900,
+            #2d8500
+        );
+
+        color: white;
+
+        font-size: 22px;
+
+        box-shadow:
+            0 8px 20px rgba(57,169,0,.18);
+
     }
 
-    .hover-link-sena:hover {
-        color: #39A900 !important;
+    .header-info h1 {
+
+        margin: 0;
+
+        color: #202922;
+
+        font-size: 28px;
+
+        font-weight: 750;
+
+        letter-spacing: -.7px;
+
     }
 
-    .btn-delete-custom {
-        background-color: #fef2f2;
+    .header-info p {
+
+        margin: 4px 0 0;
+
+        color: #858e88;
+
+        font-size: 13px;
+
+    }
+
+
+    /* =========================
+       BOTÓN NUEVO
+    ========================== */
+
+    .create-computer-btn {
+
+        height: 44px;
+
+        padding: 0 18px;
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 8px;
+
+        border-radius: 11px;
+
+        background: #39A900;
+
+        color: white;
+
+        text-decoration: none;
+
+        font-size: 12px;
+
+        font-weight: 700;
+
+        box-shadow:
+            0 6px 15px rgba(57,169,0,.18);
+
+        transition: .25s;
+
+    }
+
+    .create-computer-btn:hover {
+
+        background: #2d8b00;
+
+        color: white;
+
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 9px 20px rgba(57,169,0,.24);
+
+    }
+
+
+    /* =========================
+       RESUMEN
+    ========================== */
+
+    .computers-summary {
+
+        position: relative;
+
+        display: flex;
+
+        align-items: center;
+
+        overflow: hidden;
+
+        width: 270px;
+
+        height: 82px;
+
+        margin-bottom: 20px;
+
+        padding: 15px 18px;
+
+        border-radius: 15px;
+
+        background: white;
+
+        border: 1px solid #e6ebe6;
+
+        box-shadow:
+            0 5px 20px rgba(30,50,35,.04);
+
+    }
+
+    .summary-icon {
+
+        width: 45px;
+
+        height: 45px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 13px;
+
+        background: #eaf7e3;
+
+        color: #39A900;
+
+        font-size: 19px;
+
+    }
+
+    .summary-content {
+
+        margin-left: 12px;
+
+    }
+
+    .summary-content span {
+
+        display: block;
+
+        color: #929a94;
+
+        font-size: 8px;
+
+        font-weight: 750;
+
+        letter-spacing: 1px;
+
+    }
+
+    .summary-content strong {
+
+        display: block;
+
+        margin-top: 2px;
+
+        color: #283129;
+
+        font-size: 24px;
+
+        line-height: 1;
+
+    }
+
+    .summary-decoration {
+
+        position: absolute;
+
+        right: -10px;
+
+        bottom: -13px;
+
+        color: #f1f6ef;
+
+        font-size: 75px;
+
+    }
+
+
+    /* =========================
+       CONTENEDOR
+    ========================== */
+
+    .computers-container {
+
+        overflow: hidden;
+
+        background: white;
+
+        border: 1px solid #e5eae6;
+
+        border-radius: 18px;
+
+        box-shadow:
+            0 8px 30px rgba(30,50,35,.05);
+
+    }
+
+
+    /* =========================
+       TOOLBAR
+    ========================== */
+
+    .computers-toolbar {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 20px;
+
+        padding: 21px 24px;
+
+        background: #fff;
+
+        border-bottom: 1px solid #edf0ed;
+
+    }
+
+    .computers-toolbar h2 {
+
+        margin: 0;
+
+        color: #29322c;
+
+        font-size: 15px;
+
+        font-weight: 720;
+
+    }
+
+    .computers-toolbar p {
+
+        margin: 4px 0 0;
+
+        color: #9aa19c;
+
+        font-size: 10px;
+
+    }
+
+
+    /* =========================
+       BUSCADOR
+    ========================== */
+
+    .search-form {
+
+        width: 280px;
+
+    }
+
+    .search-wrapper {
+
+        position: relative;
+
+    }
+
+    .search-wrapper > i {
+
+        position: absolute;
+
+        left: 13px;
+
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        color: #9ba39d;
+
+        font-size: 14px;
+
+        pointer-events: none;
+
+    }
+
+    .search-wrapper input {
+
+        width: 100%;
+
+        height: 40px;
+
+        padding: 0 38px;
+
+        border: 1px solid #e1e6e2;
+
+        border-radius: 10px;
+
+        outline: none;
+
+        background: #f9faf9;
+
+        color: #404840;
+
+        font-size: 11px;
+
+        transition: .2s;
+
+    }
+
+    .search-wrapper input::placeholder {
+
+        color: #aab0ac;
+
+    }
+
+    .search-wrapper input:focus {
+
+        background: white;
+
+        border-color: #8acb68;
+
+        box-shadow:
+            0 0 0 3px rgba(57,169,0,.07);
+
+    }
+
+    .clear-search {
+
+        position: absolute;
+
+        right: 10px;
+
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        color: #9ba39d;
+
+        text-decoration: none;
+
+        font-size: 14px;
+
+    }
+
+    .clear-search:hover {
         color: #ef4444;
-        border: 1px solid #fee2e2;
-        width: 36px;
-        height: 36px;
-        border-radius: 8px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        padding: 0;
     }
 
-    .btn-delete-custom:hover {
-        background-color: #ef4444;
-        color: #ffffff;
-        border-color: #ef4444;
+
+    /* =========================
+       TABLA
+    ========================== */
+
+    .table-wrapper {
+        overflow-x: auto;
     }
+
+    .computers-table {
+
+        width: 100%;
+
+        border-collapse: collapse;
+
+        min-width: 800px;
+
+    }
+
+    .computers-table thead {
+
+        background: #f8faf8;
+
+    }
+
+    .computers-table th {
+
+        height: 46px;
+
+        padding: 0 22px;
+
+        color: #929a94;
+
+        font-size: 9px;
+
+        font-weight: 750;
+
+        letter-spacing: .7px;
+
+        text-transform: uppercase;
+
+        text-align: left;
+
+        border-bottom: 1px solid #e9ede9;
+
+    }
+
+    .computers-table th.id-column {
+        width: 80px;
+    }
+
+    .computers-table th.status-column {
+        width: 150px;
+    }
+
+    .computers-table th.actions-column {
+
+        width: 150px;
+
+        text-align: center;
+
+    }
+
+
+    /* =========================
+       FILAS
+    ========================== */
+
+    .computers-table tbody tr {
+
+        transition: .2s;
+
+        border-bottom: 1px solid #f0f2f0;
+
+    }
+
+    .computers-table tbody tr:last-child {
+        border-bottom: none;
+    }
+
+    .computers-table tbody tr:hover {
+        background: #fbfdfb;
+    }
+
+    .computers-table td {
+
+        padding: 16px 22px;
+
+        color: #454d47;
+
+        font-size: 12px;
+
+        vertical-align: middle;
+
+    }
+
+
+    /* =========================
+       ID
+    ========================== */
+
+    .computer-id {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        min-width: 42px;
+
+        height: 27px;
+
+        padding: 0 8px;
+
+        border-radius: 8px;
+
+        background: #f3f5f3;
+
+        color: #788079;
+
+        font-size: 10px;
+
+        font-weight: 700;
+
+    }
+
+
+    /* =========================
+       EQUIPO
+    ========================== */
+
+    .computer-name-wrapper {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+    }
+
+    .computer-mini-icon {
+
+        width: 40px;
+
+        height: 40px;
+
+        flex-shrink: 0;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 11px;
+
+        background: #eaf7e3;
+
+        color: #39A900;
+
+        font-size: 16px;
+
+    }
+
+    .computer-name {
+
+        display: block;
+
+        color: #29312c;
+
+        text-decoration: none;
+
+        font-size: 12px;
+
+        font-weight: 700;
+
+        transition: .2s;
+
+    }
+
+    .computer-name:hover {
+        color: #39A900;
+    }
+
+    .computer-subtitle {
+
+        display: block;
+
+        margin-top: 3px;
+
+        color: #a0a7a2;
+
+        font-size: 9px;
+
+    }
+
+
+    /* =========================
+       MARCA
+    ========================== */
+
+    .brand-badge {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 7px;
+
+        padding: 7px 10px;
+
+        border-radius: 9px;
+
+        background: #f5f7f5;
+
+        border: 1px solid #e8ebe8;
+
+        color: #5e675f;
+
+        font-size: 10px;
+
+        font-weight: 650;
+
+    }
+
+    .brand-badge i {
+
+        color: #39A900;
+
+        font-size: 11px;
+
+    }
+
+
+    /* =========================
+       ESTADO
+    ========================== */
+
+    .status-badge {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 6px;
+
+        padding: 6px 10px;
+
+        border-radius: 20px;
+
+        background: #eef8e9;
+
+        color: #43872b;
+
+        font-size: 9px;
+
+        font-weight: 650;
+
+    }
+
+    .status-badge i {
+        font-size: 9px;
+    }
+
+
+    /* =========================
+       ACCIONES
+    ========================== */
+
+    .action-buttons {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 7px;
+
+    }
+
+    .action-btn {
+
+        width: 35px;
+
+        height: 35px;
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        padding: 0;
+
+        border-radius: 9px;
+
+        text-decoration: none;
+
+        border: 1px solid transparent;
+
+        cursor: pointer;
+
+        transition: .2s;
+
+    }
+
+
+    /* VER */
+
+    .view-btn {
+
+        background: #f2f5f8;
+
+        border-color: #e3e8ed;
+
+        color: #64748b;
+
+    }
+
+    .view-btn:hover {
+
+        background: #64748b;
+
+        border-color: #64748b;
+
+        color: white;
+
+        transform: translateY(-2px);
+
+    }
+
+
+    /* EDITAR */
+
+    .edit-btn {
+
+        background: #eaf7e3;
+
+        border-color: #d9edcf;
+
+        color: #39A900;
+
+    }
+
+    .edit-btn:hover {
+
+        background: #39A900;
+
+        border-color: #39A900;
+
+        color: white;
+
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 4px 10px rgba(57,169,0,.2);
+
+    }
+
+
+    /* ELIMINAR */
+
+    .delete-form {
+
+        margin: 0;
+
+        padding: 0;
+
+    }
+
+    .delete-btn {
+
+        background: #fff3f3;
+
+        border-color: #f9dddd;
+
+        color: #ef4444;
+
+    }
+
+    .delete-btn:hover {
+
+        background: #ef4444;
+
+        border-color: #ef4444;
+
+        color: white;
+
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 4px 10px rgba(239,68,68,.18);
+
+    }
+
+
+    /* =========================
+       SIN RESULTADOS
+    ========================== */
+
+    .empty-cell {
+        padding: 0 !important;
+    }
+
+    .empty-state {
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        padding: 60px 20px;
+
+    }
+
+    .empty-icon {
+
+        width: 65px;
+
+        height: 65px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 18px;
+
+        background: #f2f6f1;
+
+        color: #9ba59c;
+
+        font-size: 28px;
+
+        margin-bottom: 15px;
+
+    }
+
+    .empty-state h3 {
+
+        margin: 0;
+
+        color: #4b544e;
+
+        font-size: 15px;
+
+        font-weight: 700;
+
+    }
+
+    .empty-state p {
+
+        margin: 6px 0 17px;
+
+        color: #9ba19d;
+
+        font-size: 11px;
+
+        text-align: center;
+
+    }
+
+    .empty-button {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 7px;
+
+        padding: 9px 14px;
+
+        border-radius: 9px;
+
+        background: #39A900;
+
+        color: white;
+
+        text-decoration: none;
+
+        font-size: 10px;
+
+        font-weight: 650;
+
+        transition: .2s;
+
+    }
+
+    .empty-button:hover {
+
+        background: #2d8b00;
+
+        color: white;
+
+    }
+
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media (max-width: 700px) {
+
+        .computers-page {
+
+            padding: 25px 15px 40px;
+
+        }
+
+        .computers-header {
+
+            align-items: flex-start;
+
+            flex-direction: column;
+
+        }
+
+        .create-computer-btn {
+
+            width: 100%;
+
+        }
+
+        .computers-summary {
+
+            width: 100%;
+
+        }
+
+        .computers-toolbar {
+
+            align-items: stretch;
+
+            flex-direction: column;
+
+        }
+
+        .search-form {
+
+            width: 100%;
+
+        }
+
+    }
+
 </style>
+
 @endsection
