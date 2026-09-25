@@ -7,59 +7,73 @@ use App\Models\Computer;
 
 class ComputerController extends Controller
 {
-        public function index(){
+        //public function index(){
 
-        $computers=Computer::all();
-        {
+        //$computers=Computer::all();
+        //{
 
-            return view('computer.index',compact('computers'));
+            //return view('computer.index',compact('computers'));
 
-        }
+        //}
+    //}
+
+    public function index()
+    {
+        $computers = Computer::all();
+        return response()->json($computers, 200);
     }
 
-    public function create(){
-        return view('computer.create');
-    }
 
     public function store(Request $request){
-        $computer = new Computer();
-        
-        $computer->number = $request->number;
-        $computer->brand = $request->brand;
-        
-        $computer->save();
+        {
+            $validated = $request->validate([
+                'number' => 'required|string|max:255',
+                'brand' => 'required|string|max:255',
 
-        return $computer;
+            ]);
+
+            $computer = Computer::create($validated);
+
+            return response()->json([
+                'message' => 'Computador creado correctamente',
+                'computer' => $computer
+            ],201);
+        }
     }
-
-    public function show ($id)
+    
+    public function show (int $id)
     {
-     $computer=Computer::find($id);
-       return view('computer.show',compact('computer'));
+     $computer=Computer::findOrFail($id);
+       return response()->json($computer, 200);
 
     }
 
+    public function update(Request $request, int $id)
+    {
+        $computer = Computer::findOrFail($id);
 
+        $validated = $request->validate([
+            'number' => 'required|string|max:255',
+            'brand' => 'required|string|max:255',
+        ]);
 
+        $computer->update($validated);
 
-        public function edit(computer $computer)
-    { 
-
-        return view('computer.edit', compact('computer'));
-    }
-
-
-
-         public function update(Request $request, computer $computer){
-            $computer->update($request->all());
-
-        return redirect()->route('computer.index');
-
+        return response()->json([
+            'message' => 'Computador actualizado correctamente',
+            'computer' => $computer
+        ], 200);
       }
+      
 
-    public function destroy(Computer $computer)
+    public function destroy(int $id)
     {
+        $computer = Computer::findOrFail($id);
         $computer->delete();
-        return redirect()->route('computer.index');
-    }
+
+        return response()->json([
+            'message' => 'Computador eliminado correctamente'
+        ], 200);
 }
+}
+

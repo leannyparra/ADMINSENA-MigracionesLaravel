@@ -3,65 +3,79 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Models\Teacher;
-use App\Models\Area;
-use App\Models\TrainingCenter;
 
 class TeacherController extends Controller
 {
-        public function index(){
+    //public function index(){
 
-        $teachers=Teacher::all();
-        {
+    //$teachers=Teacher::all();
+    //{
 
-            return view('teacher.index',compact('teachers'));
+    //return view('teacher.index',compact('teachers'));
 
-        }
+    //}
+    //}
+
+    public function index()
+    {
+        $teachers = Teacher::all();
+        return response()->json($teachers, 200);
     }
-    public function create(){
 
-        $areas = Area::all();
-        $training_centers = TrainingCenter::all();
-        
-        return view('teacher.create', compact('areas', 'training_centers'));
-
-    }
 
     public function store(Request $request){
+        {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255|unique:teachers,email',
+                'area_id' => 'nullable|exists:areas,id',
+                'training_center_id' => 'nullable|exists:training_centers,id',
+            ]);
 
-        Teacher::create($request->all());
-        
+            $teacher = Teacher::create($validated);
 
+            return response()->json([
+                'message' => 'Instructor creado correctamente',
+                'teacher' => $teacher
+            ],201);
+        }
     }
-    public function show ($id)
+
+    public function show (int $id)
     {
-     $teacher=Teacher::find($id);
-       return view('teacher.show',compact('teacher'));
+     $teacher = Teacher::findOrFail($id);
+       return response()->json($teacher, 200);
 
     }
 
-
-
-        public function edit(teacher $teacher)
-    { 
-        $areas = Area::all();
-        $training_centers = TrainingCenter::all();
-
-        return view('teacher.edit', compact('teacher', 'areas', 'training_centers'));
-    }
-
-         public function update(Request $request, teacher $teacher){
-        $teacher->update($request->all());
-
-        return redirect()->route('teacher.index');
-
-      }
-
-
-    public function destroy(Teacher $teacher)
+    public function update(Request $request, int $id)
     {
+        $teacher = Teacher::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:teachers,email,' . $teacher->id,
+            'area_id' => 'nullable|exists:areas,id',
+            'training_center_id' => 'nullable|exists:training_centers,id',
+        ]);
+
+        $teacher->update($validated);
+
+        return response()->json([
+            'message' => 'Instructor actualizado correctamente',
+            'teacher' => $teacher
+        ], 200);
+    }
+
+
+    public function destroy(int $id)
+    {
+        $teacher = Teacher::findOrFail($id);
         $teacher->delete();
-        return redirect()->route('teacher.index');
+
+        return response()->json([
+            'message' => 'Instructor eliminado correctamente'
+        ], 200);
     }
 }

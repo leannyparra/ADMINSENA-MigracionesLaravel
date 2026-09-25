@@ -3,25 +3,38 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Teacher;
 use App\Models\Course;
+use App\Models\Teacher;
 
 class CourseTeacherController extends Controller
 {
-    public function create()
+    public function store(Request $request, Course $course)
     {
-        $teachers = Teacher::all();
-        $courses = Course::all();
-        
-        return view('course_teacher.create', compact('teachers', 'courses'));
+        $validated = $request->validate([
+            'teacher_id' => 'required|exists:teachers,id',
+        ]);
+
+        $course->teachers()->syncWithoutDetaching($validated['teacher_id']);
+
+        return response()->json([
+            'message' => 'Instructor asignado correctamente',
+            'course' => $course->load('teachers')
+        ], 201);
     }
 
-    public function store(Request $request)
-    {
 
-        $teacher = Teacher::findOrFail($request->teacher_id);
-        $teacher->courses()->syncWithoutDetaching($request->course_id);
-        
-  
+    public function destroy(Course $course, Teacher $teacher)
+    {
+        if (!$course->teachers()->where('teachers.id', $teacher->id)->exists()) {
+            return response()->json([
+                'message' => 'El instructor no esta asignado a este curso'
+            ], 404);
+        }
+
+        $course->teachers()->detach($teacher->id);
+
+        return response()->json([
+            'message' => 'Instructor desasignado correctamente'
+        ], 200);
     }
 }

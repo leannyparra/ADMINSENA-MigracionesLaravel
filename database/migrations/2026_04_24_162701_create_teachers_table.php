@@ -24,7 +24,7 @@ return new class extends Migration
                 ->onDelete('set null')
                 ->onUpdate('cascade');
 
-            $table->unsignedBigInteger('training_center_id')->nullable()->unique();
+            $table->unsignedBigInteger('training_center_id')->nullable();
 
             $table->foreign('training_center_id')
                 ->references('id')

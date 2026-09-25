@@ -7,59 +7,69 @@ use App\Models\Area;
 
 class AreaController extends Controller
 {
-       public function index(){
+    //public function index(){
 
-        $areas=Area::all();
+    //$areas=Area::all();
+    //{
+
+    //return view('area.index',compact('areas'));
+
+    //}
+    //}
+
+    public function index()
+    {
+        $areas = Area::all();
+        return response()->json($areas, 200);
+    }
+
+
+    public function store(Request $request){
         {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255|unique:areas,name',
+            ]);
 
-            return view('area.index',compact('areas'));
+            $area = Area::create($validated);
 
+            return response()->json([
+                'message' => 'Área creada correctamente',
+                'area' => $area
+            ],201);
         }
     }
 
-    public function create(){
-        return view('area.create');
-    }
- public function store(Request $request){
-
-      $area = new Area();
-
-      $area->name=$request->name;
-
-      $area->save();
-
-      return $area;
-
-    }
-        public function show ($id)
+    public function show (int $id)
     {
-     $area=Area::find($id);
-       return view('area.show',compact('area'));
+     $area = Area::findOrFail($id);
+       return response()->json($area, 200);
 
     }
 
+    public function update(Request $request, int $id)
+    {
+        $area = Area::findOrFail($id);
 
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:areas,name,' . $area->id,
+        ]);
 
+        $area->update($validated);
 
-    public function edit(area $area)
-    { 
-
-        return view('area.edit', compact('area'));
-    }
-
-
-
-         public function update(Request $request, area $area){
-
-         $area->update($request->all());
-
-        return redirect()->route('area.index');
-
+        return response()->json([
+            'message' => 'Área actualizada correctamente',
+            'area' => $area
+        ], 200);
       }
 
-    public function destroy(Area $area)
+
+    public function destroy(int $id)
     {
+        $area = Area::findOrFail($id);
         $area->delete();
-        return redirect()->route('area.index');
+
+        return response()->json([
+            'message' => 'Área eliminada correctamente'
+        ], 200);
     }
 }
