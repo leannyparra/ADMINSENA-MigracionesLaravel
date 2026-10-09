@@ -19,7 +19,7 @@ class CourseController extends Controller
 
     public function index()
     {
-        $courses = Course::all();
+        $courses = Course::with('area', 'training_center')->get();
         return response()->json($courses, 200);
     }
 

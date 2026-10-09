@@ -9,7 +9,7 @@ class TeacherController extends Controller
 {
     //public function index(){
 
-    //$teachers=Teacher::all();
+    //$teachers=Teacher::with('area', 'training_center')->get();
     //{
 
     //return view('teacher.index',compact('teachers'));
@@ -19,7 +19,7 @@ class TeacherController extends Controller
 
     public function index()
     {
-        $teachers = Teacher::all();
+        $teachers = Teacher::with('area', 'training_center')->get();
         return response()->json($teachers, 200);
     }
 
@@ -44,14 +44,14 @@ class TeacherController extends Controller
 
     public function show (int $id)
     {
-     $teacher = Teacher::findOrFail($id);
+     $teacher = Teacher::with('area', 'training_center')->findOrFail($id);
        return response()->json($teacher, 200);
 
     }
 
     public function update(Request $request, int $id)
     {
-        $teacher = Teacher::findOrFail($id);
+        $teacher = Teacher::with('area', 'training_center')->findOrFail($id);
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',

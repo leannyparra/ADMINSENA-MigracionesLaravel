@@ -60,3 +60,4 @@ Route::post('apprentice',[ApprenticeController::class, 'store'])->name('api.v1.a
 Route::get('apprentice/{apprentice}',[ApprenticeController::class,'show'])->name('api.v1.apprentice.show');
 Route::put('apprentice/{apprentice}',[ApprenticeController::class,'update'])->name('api.v1.apprentice.update');
 Route::delete('apprentice/{apprentice}',[ApprenticeController::class,'destroy'])->name('api.v1.apprentice.destroy');
+
