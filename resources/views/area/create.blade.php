@@ -57,8 +57,17 @@
 
     <div class="card-body-custom">
 
-        <form action="{{ route('area.store') }}" method="POST">
-
+        <form action="{{ route('area.store') }}" method="POST" enctype="multipart/form-data">
+            <div class="input-group-custom">
+                <label for="imagen">Imagen del área <span>*</span></label>
+                <input
+                    type="file"
+                    id="imagen"
+                    name="imagen"
+                    accept="image/jpeg,image/png,image/webp"
+                    required
+                >
+            </div>
             @csrf
 
 

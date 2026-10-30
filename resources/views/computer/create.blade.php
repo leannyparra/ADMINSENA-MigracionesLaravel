@@ -659,10 +659,18 @@
     <div class="computer-form-body">
 
         <form
-            action="{{ route('computer.store') }}"
-            method="POST"
-        >
+            action="{{ route('computer.store') }}" method="POST" enctype="multipart/form-data">
 
+            <div class="input-group-custom">
+                <label for="imagen">Imagen del computador <span>*</span></label>
+                <input
+                    type="file"
+                    id="imagen"
+                    name="imagen"
+                    accept="image/jpeg,image/png,image/webp"
+                    required
+                >
+            </div>
             @csrf
 
 

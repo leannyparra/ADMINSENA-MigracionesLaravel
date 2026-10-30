@@ -11,6 +11,8 @@ class Computer extends Model
     protected $fillable = [
         'number',
         'brand',
+        'imagen_url',
+        'imagen_public_id',
     ];
     public function apprentices(){
         return $this->hasMany('App\Models\Apprentice');

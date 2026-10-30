@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Area;
+use Cloudinary\Cloudinary;
 
 class AreaController extends Controller
 {
@@ -24,19 +25,42 @@ class AreaController extends Controller
     }
 
 
-    public function store(Request $request){
-        {
-            $validated = $request->validate([
-                'name' => 'required|string|max:255|unique:areas,name',
-            ]);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:areas,name',
+            'imagen' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
+        ]);
 
-            $area = Area::create($validated);
+        $file = $request->file('imagen');
 
-            return response()->json([
-                'message' => 'Área creada correctamente',
-                'area' => $area
-            ],201);
-        }
+        $cloudinary = new Cloudinary([
+            'cloud' => [
+                'cloud_name' => config('services.cloudinary.cloud_name'),
+                'api_key' => config('services.cloudinary.api_key'),
+                'api_secret' => config('services.cloudinary.api_secret'),
+            ],
+            'url' => ['secure' => true],
+        ]);
+
+        $resultado = $cloudinary->uploadApi()->upload(
+            $file->getRealPath(),
+            [
+                'folder' => 'areas',
+                'resource_type' => 'image',
+            ]
+        );
+
+        $area = Area::create([
+            'name' => $request->name,
+            'imagen_url' => $resultado['secure_url'],
+            'imagen_public_id' => $resultado['public_id'],
+        ]);
+
+        return response()->json([
+            'message' => 'Área creada correctamente',
+            'data' => $area,
+        ], 201);
     }
 
     public function show (int $id)
